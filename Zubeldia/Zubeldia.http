@@ -1,0 +1,6 @@
+@Zubeldia_HostAddress = http://localhost:5090
+
+GET {{Zubeldia_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

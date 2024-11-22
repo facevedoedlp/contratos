@@ -1,0 +1,17 @@
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.csproj.AssemblyReference.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.GeneratedMSBuildEditorConfig.editorconfig
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.AssemblyInfoInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.AssemblyInfo.cs
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.csproj.CoreCompileInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Services\bin\Debug\net8.0\Zubeldia.Services.deps.json
+D:\VanguardIT\Zubeldia\Zubeldia.Services\bin\Debug\net8.0\Zubeldia.Services.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Services\bin\Debug\net8.0\Zubeldia.Services.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Services\bin\Debug\net8.0\Zubeldia.Commons.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Services\bin\Debug\net8.0\Zubeldia.Domain.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Services\bin\Debug\net8.0\Zubeldia.Domain.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Services\bin\Debug\net8.0\Zubeldia.Commons.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.23464DA0.Up2Date
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\refint\Zubeldia.Services.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\ref\Zubeldia.Services.dll

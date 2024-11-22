@@ -1,0 +1,17 @@
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.csproj.AssemblyReference.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.GeneratedMSBuildEditorConfig.editorconfig
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.AssemblyInfoInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.AssemblyInfo.cs
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.csproj.CoreCompileInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\bin\Debug\net8.0\Zubeldia.Domain.Mappers.deps.json
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\bin\Debug\net8.0\Zubeldia.Domain.Mappers.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\bin\Debug\net8.0\Zubeldia.Domain.Mappers.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\bin\Debug\net8.0\Zubeldia.Commons.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\bin\Debug\net8.0\Zubeldia.Domain.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\bin\Debug\net8.0\Zubeldia.Domain.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\bin\Debug\net8.0\Zubeldia.Commons.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.18BA0346.Up2Date
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\refint\Zubeldia.Domain.Mappers.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\ref\Zubeldia.Domain.Mappers.dll

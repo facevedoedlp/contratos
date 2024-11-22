@@ -1,0 +1,5 @@
+D:\VanguardIT\Zubeldia\Zubeldia.Dtos\obj\Debug\net8.0\Zubeldia.Dtos.csproj.AssemblyReference.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Dtos\obj\Debug\net8.0\Zubeldia.Dtos.GeneratedMSBuildEditorConfig.editorconfig
+D:\VanguardIT\Zubeldia\Zubeldia.Dtos\obj\Debug\net8.0\Zubeldia.Dtos.AssemblyInfoInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Dtos\obj\Debug\net8.0\Zubeldia.Dtos.AssemblyInfo.cs
+D:\VanguardIT\Zubeldia\Zubeldia.Dtos\obj\Debug\net8.0\Zubeldia.Dtos.csproj.CoreCompileInputs.cache

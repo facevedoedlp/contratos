@@ -1,0 +1,11 @@
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\bin\Debug\net8.0\Zubeldia.Commons.deps.json
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\bin\Debug\net8.0\Zubeldia.Commons.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\bin\Debug\net8.0\Zubeldia.Commons.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.GeneratedMSBuildEditorConfig.editorconfig
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.AssemblyInfoInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.AssemblyInfo.cs
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.csproj.CoreCompileInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\refint\Zubeldia.Commons.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\ref\Zubeldia.Commons.dll
