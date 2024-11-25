@@ -1,27 +1,25 @@
 ﻿namespace Zubeldia.Domain.Session
 {
     using System.Diagnostics.CodeAnalysis;
+    using Zubeldia.Commons.Enums.Permission;
 
     [ExcludeFromCodeCoverage]
     public class SessionData
     {
-        private int selectedCompanyValue;
         private UserData userValue;
-
-        public int SelectedCompany
-        {
-            get { return selectedCompanyValue; }
-        }
-
-        public UserData User
-        {
-            get { return userValue ?? new UserData(); }
-        }
+        public UserData User => userValue ?? new UserData();
+        public int UserId => User.Id;
+        public IEnumerable<PermissionResourceTypeEnum> Resources => User.Permissions.Select(p => p.Resource).Distinct();
+        public IEnumerable<PermissionActionEnum> Actions => User.Permissions.Select(p => p.Action).Distinct();
 
         public void SetSessionData(int selectedCompany, UserData user)
         {
-            selectedCompanyValue = selectedCompany;
             userValue = user;
+        }
+
+        public bool HasPermission(PermissionResourceTypeEnum resource, PermissionActionEnum action)
+        {
+            return User.Permissions.Any(p => p.Resource == resource && p.Action == action);
         }
     }
 }

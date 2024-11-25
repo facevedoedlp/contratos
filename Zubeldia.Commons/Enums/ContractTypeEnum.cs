@@ -5,15 +5,15 @@
     public enum ContractTypeEnum
     {
         [Display(Name = "AFA")]
-        Afa = 1,
+        Afa = 0,
 
         [Display(Name = "Laboral con Objetivos")]
-        EmploymentWithObjectives = 2,
+        EmploymentWithObjectives = 1,
 
         [Display(Name = "Laboral con Objetivos y Trayectoria")]
-        EmploymentWithObjectivesAndCareerPath = 3,
+        EmploymentWithObjectivesAndCareerPath = 2,
 
         [Display(Name = "Laboral con Objetivos y Trayectoria en Moneda Extranjera")]
-        EmploymentWithObjectivesAndCareerPathForeignCurrency = 4,
+        EmploymentWithObjectivesAndCareerPathForeignCurrency = 3,
     }
 }

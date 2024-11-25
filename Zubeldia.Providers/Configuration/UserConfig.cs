@@ -3,7 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Zubeldia.Domain.Entities;
+    using Zubeldia.Domain.Entities.User;
 
     [ExcludeFromCodeCoverage]
     public class UserConfig : IEntityTypeConfiguration<User>

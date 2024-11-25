@@ -3,7 +3,6 @@
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Zubeldia.Domain.Entities;
 
     [ExcludeFromCodeCoverage]
     public class CurrencyConfig : IEntityTypeConfiguration<Currency>

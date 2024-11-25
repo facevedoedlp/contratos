@@ -1,6 +1,6 @@
 ﻿namespace Zubeldia.Domain.Interfaces.Providers
 {
-    using Zubeldia.Domain.Entities;
+    using Zubeldia.Domain.Entities.User;
 
     public interface IUserDao : IRepository<User>
     {

@@ -1,7 +1,7 @@
 ﻿namespace Zubeldia.Providers.Repositories.User
 {
     using Microsoft.EntityFrameworkCore;
-    using Zubeldia.Domain.Entities;
+    using Zubeldia.Domain.Entities.User;
     using Zubeldia.Domain.Interfaces.Providers;
 
     public class UserDao(ZubeldiaDbContext dbContext, ISessionAccessor sessionAccessor)

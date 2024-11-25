@@ -1,41 +1,34 @@
 ﻿namespace Zubeldia.Domain.Session
 {
     using System.Diagnostics.CodeAnalysis;
+    using Zubeldia.Domain.Entities;
 
     [ExcludeFromCodeCoverage]
     public class UserData
     {
-        private string userNameValue;
-        private string firstNameValue;
-        private string lastNameValue;
-        private string emailValue;
+        public int Id { get; private set; }
+        public string Name { get; private set; }
+        public string LastName { get; private set; }
+        public string Email { get; private set; }
+        public string FullName => $"{Name} {LastName}";
+        public List<Role> Roles { get; private set; } = [];
+        public List<Permission> Permissions { get; private set; } = [];
 
-        public string UserName
+        public void SetUserData(
+            int id,
+            string userName,
+            string name,
+            string lastName,
+            string email,
+            List<Role> roles,
+            List<Permission> permissions)
         {
-            get { return userNameValue; }
-        }
-
-        public string FirstName
-        {
-            get { return firstNameValue; }
-        }
-
-        public string LastName
-        {
-            get { return lastNameValue; }
-        }
-
-        public string Email
-        {
-            get { return emailValue; }
-        }
-
-        public void SetUserData(string personIdentifier, string userName, string firstName, string lastName, string email)
-        {
-            userNameValue = userName;
-            firstNameValue = firstName;
-            lastNameValue = lastName;
-            emailValue = email;
+            Id = id;
+            Name = name;
+            LastName = lastName;
+            Email = email;
+            Roles = roles;
+            Permissions = permissions;
         }
     }
 }

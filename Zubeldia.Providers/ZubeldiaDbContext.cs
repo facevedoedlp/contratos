@@ -4,7 +4,6 @@
     using System.Reflection;
     using Microsoft.EntityFrameworkCore;
     using Zubeldia.Domain.Entities;
-    using Zubeldia.Domain.Entities;
     using Zubeldia.Domain.Interfaces.Providers;
 
     public class ZubeldiaDbContext : DbContext, IZubeldiaDbContext
@@ -42,5 +41,9 @@
         public virtual DbSet<Contract> Contracts { get; set; }
         public virtual DbSet<ContractObjective> ContractObjectives { get; set; }
         public virtual DbSet<ContractSalary> ContractSalaries { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Permission> Permioss { get; set; }
+        public virtual DbSet<RolePermission> RolePermissions { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
     }
 }

@@ -80,6 +80,10 @@ public class PdfContractProcessor : IPdfContractProcessor
 
         // Extraer salarios
         var salaries = ParseSalariesData(pdfText);
+
+        // Extraer Objetivos
+        var objetives = ParseObjetivesData(pdfText);
+
         contract.Salaries = salaries;
 
         return (contract, salaries);
@@ -133,7 +137,7 @@ public class PdfContractProcessor : IPdfContractProcessor
                     ExchangeRate = 1,
                     InstallmentsCount = 12,
                     TotalRecognition = amount * 12,
-                    InstallmentRecognition = amount
+                    InstallmentRecognition = amount,
                 };
 
                 salaries.Add(salary);
@@ -148,6 +152,13 @@ public class PdfContractProcessor : IPdfContractProcessor
         }
 
         return salaries;
+    }
+
+    private List<ContractObjective> ParseObjetivesData(string pdfText)
+    {
+        var objetives = new List<ContractObjective>();
+
+        return objetives;
     }
 
     private DateTime ParseSpanishDate(string spanishDate)

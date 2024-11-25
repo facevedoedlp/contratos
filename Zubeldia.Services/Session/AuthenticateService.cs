@@ -4,7 +4,7 @@
     using BCrypt.Net;
     using FluentValidation;
     using Zubeldia.Domain.Dtos.Authentication;
-    using Zubeldia.Domain.Entities;
+    using Zubeldia.Domain.Entities.User;
     using Zubeldia.Domain.Interfaces.Providers;
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Dtos.Models.Commons;
