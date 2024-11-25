@@ -175,10 +175,10 @@
     "schemas": {
       "ContractTypeEnum": {
         "enum": [
+          0,
           1,
           2,
-          3,
-          4
+          3
         ],
         "type": "integer",
         "format": "int32"

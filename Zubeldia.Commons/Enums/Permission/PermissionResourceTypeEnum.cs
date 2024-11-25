@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Zubeldia.Commons.Enums.Permission
+﻿namespace Zubeldia.Commons.Enums.Permission
 {
+    using System.ComponentModel.DataAnnotations;
+
     public enum PermissionResourceTypeEnum
     {
         [Display(Name = "Usuarios")]
@@ -12,5 +12,8 @@ namespace Zubeldia.Commons.Enums.Permission
 
         [Display(Name = "Roles del usuario")]
         UserRoles = 2,
+
+        [Display(Name = "Contratos")]
+        Contracts = 3,
     }
 }

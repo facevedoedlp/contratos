@@ -15,3 +15,4 @@ D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\refint\Zubeldia.Services.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.pdb
 D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\ref\Zubeldia.Services.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Services\obj\Debug\net8.0\Zubeldia.Services.sourcelink.json

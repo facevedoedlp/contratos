@@ -7,6 +7,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
+    using Zubeldia.Domain.Entities;
     using Zubeldia.Domain.Interfaces.Services;
 
     public class TokenService(IConfiguration configuration)
@@ -54,7 +55,7 @@
             });
         }
 
-        public string GenerateToken(string userId, string[] roles)
+        public string GenerateToken(int userId, string firstName, string lastName, string email, IEnumerable<Permission> permissions)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"];
@@ -63,14 +64,21 @@
             var expirationInMinutes = int.Parse(jwtSettings["ExpirationInMinutes"] ?? "60");
 
             var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.GivenName, firstName),
+            new Claim(ClaimTypes.Surname, lastName),
+            new Claim(ClaimTypes.Email, email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+
+            foreach (var permission in permissions)
             {
-                new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
+                claims.Add(new Claim("permission", $"{permission.Resource}.{permission.Action}"));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
             var token = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,

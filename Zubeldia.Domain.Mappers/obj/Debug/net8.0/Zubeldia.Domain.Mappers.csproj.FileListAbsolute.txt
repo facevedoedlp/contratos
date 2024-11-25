@@ -15,3 +15,4 @@ D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.
 D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\refint\Zubeldia.Domain.Mappers.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.pdb
 D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\ref\Zubeldia.Domain.Mappers.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain.Mappers\obj\Debug\net8.0\Zubeldia.Domain.Mappers.sourcelink.json

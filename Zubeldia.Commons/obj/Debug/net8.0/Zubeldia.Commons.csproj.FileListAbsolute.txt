@@ -9,3 +9,4 @@ D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\refint\Zubeldia.Commons.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.pdb
 D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\ref\Zubeldia.Commons.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.sourcelink.json

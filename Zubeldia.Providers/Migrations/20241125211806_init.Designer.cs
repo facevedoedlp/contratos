@@ -12,7 +12,7 @@ using Zubeldia.Providers;
 namespace Zubeldia.Providers.Migrations
 {
     [DbContext(typeof(ZubeldiaDbContext))]
-    [Migration("20241121221036_init")]
+    [Migration("20241125211806_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -221,6 +221,34 @@ namespace Zubeldia.Providers.Migrations
                     b.ToTable("Currencies", (string)null);
                 });
 
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<short>("Action")
+                        .HasColumnType("smallint")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<short>("Resource")
+                        .HasColumnType("smallint")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions", (string)null);
+                });
+
             modelBuilder.Entity("Zubeldia.Domain.Entities.Player", b =>
                 {
                     b.Property<int>("Id")
@@ -253,6 +281,41 @@ namespace Zubeldia.Providers.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Players", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RolePermissions", (string)null);
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.User", b =>
@@ -295,6 +358,21 @@ namespace Zubeldia.Providers.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Contract", b =>
@@ -346,6 +424,44 @@ namespace Zubeldia.Providers.Migrations
                     b.Navigation("Currency");
                 });
 
+            modelBuilder.Entity("Zubeldia.Domain.Entities.RolePermission", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.UserRole", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Zubeldia.Domain.Entities.Contract", b =>
                 {
                     b.Navigation("Objectives");
@@ -353,9 +469,26 @@ namespace Zubeldia.Providers.Migrations
                     b.Navigation("Salaries");
                 });
 
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("Zubeldia.Domain.Entities.Player", b =>
                 {
                     b.Navigation("Contracts");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Role", b =>
+                {
+                    b.Navigation("RolePermissions");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

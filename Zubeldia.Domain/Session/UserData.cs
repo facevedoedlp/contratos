@@ -11,7 +11,6 @@
         public string LastName { get; private set; }
         public string Email { get; private set; }
         public string FullName => $"{Name} {LastName}";
-        public List<Role> Roles { get; private set; } = [];
         public List<Permission> Permissions { get; private set; } = [];
 
         public void SetUserData(
@@ -20,14 +19,12 @@
             string name,
             string lastName,
             string email,
-            List<Role> roles,
             List<Permission> permissions)
         {
             Id = id;
             Name = name;
             LastName = lastName;
             Email = email;
-            Roles = roles;
             Permissions = permissions;
         }
     }

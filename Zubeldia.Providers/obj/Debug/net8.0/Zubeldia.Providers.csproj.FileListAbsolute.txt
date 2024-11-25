@@ -17,3 +17,4 @@ D:\VanguardIT\Zubeldia\Zubeldia.Providers\obj\Debug\net8.0\Zubeldia.Providers.ge
 D:\VanguardIT\Zubeldia\Zubeldia.Providers\obj\Debug\net8.0\ref\Zubeldia.Providers.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Providers\bin\Debug\net8.0\Zubeldia.Commons.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Providers\bin\Debug\net8.0\Zubeldia.Commons.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Providers\obj\Debug\net8.0\Zubeldia.Providers.sourcelink.json

@@ -13,3 +13,4 @@ D:\VanguardIT\Zubeldia\Zubeldia.Domain\bin\Debug\net8.0\Zubeldia.Commons.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Domain\bin\Debug\net8.0\Zubeldia.Commons.pdb
 D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Debug\net8.0\Zubeldia.Domain.csproj.AssemblyReference.cache
 D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Debug\net8.0\Zubeldia.3D559EF4.Up2Date
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Debug\net8.0\Zubeldia.Domain.sourcelink.json

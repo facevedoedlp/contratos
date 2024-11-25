@@ -1,6 +1,6 @@
 namespace Zubeldia;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Zubeldia.Middleware;
 using Zubeldia.Services.Session;
 
 public class Program
@@ -21,15 +21,18 @@ public class Program
 
         var app = builder.Build();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
 
+        app.UseCors($"EnableAllCors");
+        app.UseMiddleware<SessionDataMiddleware>();
         app.UseHttpsRedirection();
-        app.UseAuthentication();
-        app.UseAuthorization();
         app.MapControllers();
         app.Run();
     }

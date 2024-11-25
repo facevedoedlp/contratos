@@ -4,7 +4,7 @@
     using BCrypt.Net;
     using FluentValidation;
     using Zubeldia.Domain.Dtos.Authentication;
-    using Zubeldia.Domain.Entities.User;
+    using Zubeldia.Domain.Entities;
     using Zubeldia.Domain.Interfaces.Providers;
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Dtos.Models.Commons;
@@ -34,9 +34,15 @@
                 };
             }
 
+            // Obtén los permisos del usuario
+            var permissions = await userDao.GetUserPermissionsAsync(user.Id);
+
             var token = tokenService.GenerateToken(
-                user.Id.ToString(),
-                new string[] { } // TODO: Roles
+                user.Id,
+                user.Name,
+                user.LastName,
+                user.Email,
+                permissions
             );
 
             return new LoginResponse
@@ -62,5 +68,7 @@
 
             return response;
         }
+
+        public async Task<IEnumerable<Permission>> GetUserPermissions(int userId) => await userDao.GetUserPermissionsAsync(userId);
     }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Zubeldia.Domain.Mappers")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b47165ff213c655e9e0b7addb55d9665f1224ef")]
 [assembly: System.Reflection.AssemblyProductAttribute("Zubeldia.Domain.Mappers")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Zubeldia.Domain.Mappers")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

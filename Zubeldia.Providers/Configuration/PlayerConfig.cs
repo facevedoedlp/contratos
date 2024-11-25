@@ -2,7 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Zubeldia.Domain.Entities.Player;
+    using Zubeldia.Domain.Entities;
 
     public class PlayerConfig : IEntityTypeConfiguration<Player>
     {

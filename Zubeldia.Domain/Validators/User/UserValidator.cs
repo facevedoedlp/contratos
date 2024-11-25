@@ -21,7 +21,7 @@
                 .WithMessage(MessageUtils.InvalidValue(nameof(UserDto.Email)))
                 .Must(email => email.EndsWith(ValidationConstants.DomainEmail))
                 .WithMessage(MessageUtils.MustContainEmailDomain(nameof(UserDto.Email)))
-                .MustAsync(async (rootObject, dealId, context, cancellationToken) => !await this.userDao.IsEmailTaken(rootObject.Email))
+                .MustAsync(async (rootObject, dealId, context, cancellationToken) => !await this.userDao.IsEmailTakenAsync(rootObject.Email))
                 .WithMessage(MessageUtils.AlreadyExists(nameof(UserDto.Email)));
 
             RuleFor(x => x.Name)
