@@ -9,6 +9,18 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("EnableAllCors", builder =>
+            {
+                builder
+                    .WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
+
         builder.Services.InjectionStart(
             builder.Configuration,
             builder.Environment

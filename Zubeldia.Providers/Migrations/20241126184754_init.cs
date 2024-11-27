@@ -93,7 +93,7 @@ namespace Zubeldia.Providers.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    File = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    File = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<short>(type: "smallint", nullable: false),

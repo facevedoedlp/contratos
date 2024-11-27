@@ -72,7 +72,7 @@
 
         private static void AddValidators(this IServiceCollection services)
         {
-            services.AddScoped<IValidator<UserDto>, UserValidator>();
+            services.AddScoped<IValidator<RegisterUserRequest>, UserValidator>();
             services.AddScoped<IValidator<CreateContractRequest>, ContractValidator>();
         }
 

@@ -12,9 +12,17 @@
     public class ContractController(IContractService contractService)
         : ZubeldiaControllerBase
     {
+        [HttpGet]
+        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.View)]
+        public async Task<ActionResult<ValidatorResultDto>> Get([FromForm] CreateContractRequest contract)
+        {
+            var response = await contractService.CreateAsync(contract);
+            return Ok(response);
+        }
+
         [HttpPost]
         [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Create)]
-        public async Task<ActionResult<ValidatorResultDto>> CreateAsync([FromForm] CreateContractRequest contract)
+        public async Task<ActionResult<ValidatorResultDto>> Post([FromForm] CreateContractRequest contract)
         {
             var response = await contractService.CreateAsync(contract);
             return Ok(response);

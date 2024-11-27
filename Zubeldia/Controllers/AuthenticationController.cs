@@ -25,7 +25,7 @@
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<ValidatorResultDto>> RegisterAsync([FromBody] UserDto userDto)
+        public async Task<ActionResult<ValidatorResultDto>> RegisterAsync([FromBody] RegisterUserRequest userDto)
         {
             var response = await authenticateService.RegisterAsync(userDto);
             return Ok(response);

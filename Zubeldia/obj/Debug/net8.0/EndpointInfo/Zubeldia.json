@@ -63,17 +63,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserDto"
+                "$ref": "#/components/schemas/RegisterUserRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserDto"
+                "$ref": "#/components/schemas/RegisterUserRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserDto"
+                "$ref": "#/components/schemas/RegisterUserRequest"
               }
             }
           }
@@ -103,6 +103,72 @@
       }
     },
     "/api/contract": {
+      "get": {
+        "tags": [
+          "Contract"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "PlayerId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Type": {
+                    "$ref": "#/components/schemas/ContractTypeEnum"
+                  }
+                }
+              },
+              "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "PlayerId": {
+                  "style": "form"
+                },
+                "File": {
+                  "style": "form"
+                },
+                "Type": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Contract"
@@ -232,22 +298,18 @@
         },
         "additionalProperties": false
       },
-      "UserDto": {
+      "RegisterUserRequest": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
             "nullable": true
           },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "password": {
             "type": "string",
             "nullable": true
           },
-          "name": {
+          "firstName": {
             "type": "string",
             "nullable": true
           },

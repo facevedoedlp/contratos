@@ -8,7 +8,7 @@
     {
         public UserProfile()
         {
-            CreateMap<UserDto, User>();
+            CreateMap<RegisterUserRequest, User>();
         }
     }
 }

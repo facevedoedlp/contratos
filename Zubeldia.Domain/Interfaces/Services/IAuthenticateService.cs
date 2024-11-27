@@ -10,6 +10,6 @@
     {
         Task<IEnumerable<Permission>> GetUserPermissions(int userId);
         Task<LoginResponse> LoginAsync(LoginRequest loginDto);
-        Task<ValidatorResultDto> RegisterAsync(UserDto userDto);
+        Task<ValidatorResultDto> RegisterAsync(RegisterUserRequest userDto);
     }
 }

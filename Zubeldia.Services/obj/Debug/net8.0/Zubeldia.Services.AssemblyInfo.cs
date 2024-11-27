@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Zubeldia.Services")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b47165ff213c655e9e0b7addb55d9665f1224ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+633ac97a2319b1da24ac1da0595a9f0e37d578ed")]
 [assembly: System.Reflection.AssemblyProductAttribute("Zubeldia.Services")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Zubeldia.Services")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

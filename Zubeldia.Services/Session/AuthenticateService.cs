@@ -10,7 +10,7 @@
     using Zubeldia.Dtos.Models.Commons;
     using Zubeldia.Dtos.Models.User;
 
-    public class AuthenticateService(IUserDao userDao, IMapper mapper, IValidator<UserDto> userValidator, ITokenService tokenService)
+    public class AuthenticateService(IUserDao userDao, IMapper mapper, IValidator<RegisterUserRequest> userValidator, ITokenService tokenService)
         : IAuthenticateService
     {
         public async Task<LoginResponse> LoginAsync(LoginRequest loginDto)
@@ -39,7 +39,7 @@
 
             var token = tokenService.GenerateToken(
                 user.Id,
-                user.Name,
+                user.FirstName,
                 user.LastName,
                 user.Email,
                 permissions
@@ -53,7 +53,7 @@
             };
         }
 
-        public async Task<ValidatorResultDto> RegisterAsync(UserDto userDto)
+        public async Task<ValidatorResultDto> RegisterAsync(RegisterUserRequest userDto)
         {
             var validatorResult = await userValidator.ValidateAsync(userDto);
             var response = mapper.Map<ValidatorResultDto>(validatorResult);

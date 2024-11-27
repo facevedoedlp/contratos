@@ -12,7 +12,7 @@ using Zubeldia.Providers;
 namespace Zubeldia.Providers.Migrations
 {
     [DbContext(typeof(ZubeldiaDbContext))]
-    [Migration("20241125211806_init")]
+    [Migration("20241126184754_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -44,9 +44,9 @@ namespace Zubeldia.Providers.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnOrder(5);
 
-                    b.Property<byte[]>("File")
+                    b.Property<string>("File")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(3);
 
                     b.Property<string>("LastModificationBy")
@@ -334,19 +334,19 @@ namespace Zubeldia.Providers.Migrations
                         .HasColumnName("Email")
                         .HasColumnOrder(1);
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Name")
+                        .HasColumnOrder(3);
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("LastName")
                         .HasColumnOrder(4);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("Name")
-                        .HasColumnOrder(3);
 
                     b.Property<string>("Password")
                         .IsRequired()
