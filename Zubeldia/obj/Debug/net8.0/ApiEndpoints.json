@@ -53,9 +53,55 @@
   },
   {
     "ContainingType": "Zubeldia.Controllers.ContractController",
-    "Method": "Get",
+    "Method": "GetAsync",
     "RelativePath": "api/contract",
     "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortingProperty",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SearchText",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sorting",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Zubeldia.Domain.Entities.Base.SearchResultPage\u00601[[Zubeldia.Domain.Dtos.Contract.GetContractsDto, Zubeldia.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Zubeldia.Controllers.ContractController",
+    "Method": "PostAsync",
+    "RelativePath": "api/contract",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -94,36 +140,21 @@
   },
   {
     "ContainingType": "Zubeldia.Controllers.ContractController",
-    "Method": "Post",
-    "RelativePath": "api/contract",
-    "HttpMethod": "POST",
+    "Method": "GetByIdAsync",
+    "RelativePath": "api/contract/{id}",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Title",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "PlayerId",
+        "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "File",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "Type",
-        "Type": "System.String",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "Zubeldia.Dtos.Models.Commons.ValidatorResultDto",
+        "Type": "Zubeldia.Domain.Dtos.Contract.GetContractDto.GetContractDto",
         "MediaTypes": [
           "text/plain",
           "application/json",

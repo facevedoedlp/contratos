@@ -3,6 +3,7 @@
     using AutoMapper;
     using BCrypt.Net;
     using FluentValidation;
+    using Grogu.Domain;
     using Zubeldia.Domain.Dtos.Authentication;
     using Zubeldia.Domain.Entities;
     using Zubeldia.Domain.Interfaces.Providers;
@@ -45,11 +46,14 @@
                 permissions
             );
 
+            var userDto = mapper.Map<UserDto>(user);
+            userDto.Permissions = permissions.Select(p => $"{p.Resource.DisplayValue()}.{p.Action.DisplayValue()}").ToList();
+
             return new LoginResponse
             {
                 Success = true,
-                Token = token,
-                Message = "Login successful",
+                Access = token,
+                User = userDto,
             };
         }
 
