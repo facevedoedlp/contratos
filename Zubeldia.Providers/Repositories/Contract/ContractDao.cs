@@ -13,7 +13,7 @@
     {
         private readonly ZubeldiaDbContext dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-        
+        public async Task<string?> GetFileAsync(int id) => await dbContext.Contracts.Where(x => x.Id == id).Select(x => x.File).SingleOrDefaultAsync();
 
         public async Task<Contract?> GetByIdAsync(int id)
         {

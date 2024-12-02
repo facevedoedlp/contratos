@@ -166,6 +166,22 @@
   },
   {
     "ContainingType": "Zubeldia.Controllers.ContractController",
+    "Method": "GetContractFile",
+    "RelativePath": "api/contract/files/contract/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Zubeldia.Controllers.ContractController",
     "Method": "GetTypes",
     "RelativePath": "api/contract/types",
     "HttpMethod": "GET",

@@ -29,6 +29,23 @@
             return mapper.Map<SearchResultPage<GetContractsDto>>(searchResult);
         }
 
+        public async Task<(string ContentType, Stream FileStream)?> GetContractFileAsync(int id)
+        {
+            var fileUri = await contractDao.GetFileAsync(id);
+
+            if (string.IsNullOrEmpty(fileUri)) return null;
+
+            try
+            {
+                var fileStream = fileStorageService.GetFileStreamAsync(fileUri);
+                return ("application/pdf", fileStream);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+        }
+
         public async Task<ValidatorResultDto> CreateAsync(CreateContractRequest request)
         {
             try

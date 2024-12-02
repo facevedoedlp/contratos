@@ -17,6 +17,24 @@
             rootPath = Path.Combine(environment.ContentRootPath, relativePath);
         }
 
+        public  Stream GetFileStreamAsync(string fileRoute)
+        {
+            if (string.IsNullOrEmpty(fileRoute)) throw new ArgumentNullException(nameof(fileRoute));
+
+            fileRoute = fileRoute.TrimStart('/');
+
+            var fullPath = Path.Combine(rootPath, fileRoute);
+
+            if (!File.Exists(fullPath)) throw new FileNotFoundException("El archivo no fue encontrado", fullPath);
+
+            var fullPathNormalized = Path.GetFullPath(fullPath);
+            var rootPathNormalized = Path.GetFullPath(rootPath);
+
+            if (!fullPathNormalized.StartsWith(rootPathNormalized)) throw new UnauthorizedAccessException("Acceso al archivo no permitido");
+
+            return new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        }
+
         public async Task<string> SaveFileAsync(IFormFile file, string containerName)
         {
             var extension = Path.GetExtension(file.FileName);

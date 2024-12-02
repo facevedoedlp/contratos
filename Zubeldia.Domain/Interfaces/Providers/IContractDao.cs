@@ -9,5 +9,6 @@
     {
         Task<SearchResultPage<Contract>> GetByFiltersWithPaginationAsync(GetContractsRequest request);
         Task<Contract?> GetByIdAsync(int id);
+        Task<string?> GetFileAsync(int id);
     }
 }
