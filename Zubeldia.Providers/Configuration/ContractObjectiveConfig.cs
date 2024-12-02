@@ -15,11 +15,11 @@
             builder.Property(x => x.Description).IsRequired().HasMaxLength(150).HasColumnOrder(2);
             builder.Property(x => x.Amount).IsRequired().HasPrecision(18, 2).HasColumnOrder(3);
             builder.Property(x => x.CurrencyId).IsRequired().HasColumnOrder(4);
-            builder.Property(x => x.Season).HasColumnOrder(5);
-            builder.Property(x => x.StartDate).IsRequired().HasColumnOrder(6);
-            builder.Property(x => x.EndDate).IsRequired().HasColumnOrder(7);
-            builder.Property(x => x.IsCompleted).IsRequired().HasColumnOrder(8);
-            builder.Property(x => x.CompletionDate).HasColumnOrder(9);
+            builder.Property(x => x.StartDate).IsRequired().HasColumnOrder(5);
+            builder.Property(x => x.EndDate).IsRequired().HasColumnOrder(6);
+            builder.Property(x => x.CompletionDate).HasColumnOrder(7);
+            builder.Property(x => x.IsRepeatable).IsRequired().HasColumnOrder(8);
+            builder.Property(x => x.TimesAchieved).IsRequired().HasColumnOrder(9);
 
             builder.HasOne(x => x.Contract)
                 .WithMany(x => x.Objectives)

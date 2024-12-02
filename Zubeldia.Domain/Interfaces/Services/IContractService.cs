@@ -1,5 +1,7 @@
 ﻿namespace Zubeldia.Domain.Interfaces.Services
 {
+    using System.Collections.Generic;
+    using Zubeldia.Domain.Dtos.Commons;
     using Zubeldia.Domain.Dtos.Contract;
     using Zubeldia.Domain.Dtos.Contract.GetContractDto;
     using Zubeldia.Domain.Entities.Base;
@@ -10,5 +12,6 @@
         Task<ValidatorResultDto> CreateAsync(CreateContractRequest request);
         Task<SearchResultPage<GetContractsDto>> GetByFiltersWithPaginationAsync(GetContractsRequest request);
         Task<GetContractDto> GetByIdAsync(int id);
+        IEnumerable<KeyNameDto> GetTypes();
     }
 }

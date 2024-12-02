@@ -1,7 +1,6 @@
 ﻿namespace Zubeldia.Providers.Repositories
 {
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
     using Zubeldia.Commons.Enums;
     using Zubeldia.Commons.Extensions;
     using Zubeldia.Domain.Dtos.Contract;
@@ -9,11 +8,12 @@
     using Zubeldia.Domain.Entities.Base;
     using Zubeldia.Domain.Interfaces.Providers;
 
-    public class ContractDao(ZubeldiaDbContext dbContext, ISessionAccessor sessionAccessor, IConfiguration configuration)
+    public class ContractDao(ZubeldiaDbContext dbContext, ISessionAccessor sessionAccessor)
         : Repository<Contract>(dbContext, sessionAccessor), IContractDao
     {
         private readonly ZubeldiaDbContext dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        private readonly int totalRecordsPerPage = configuration.GetSection("Searchs").GetSection("TotalRecordsPerPage").Get<int>();
+
+        
 
         public async Task<Contract?> GetByIdAsync(int id)
         {
@@ -30,8 +30,8 @@
         public async Task<SearchResultPage<Contract>> GetByFiltersWithPaginationAsync(GetContractsRequest request)
         {
             var contracts = GetByFilters(request);
-            var resultPage = await contracts.Skip((request.Page - 1) * totalRecordsPerPage)
-                                                                     .Take(totalRecordsPerPage)
+            var resultPage = await contracts.Skip((request.Page - 1) * request.TotalRecordPage)
+                                                                     .Take(request.TotalRecordPage)
                                                                      .ToListAsync();
 
             return new SearchResultPage<Contract>(contracts.Count(), resultPage);
@@ -39,13 +39,30 @@
 
         private IQueryable<Contract> GetByFilters(GetContractsRequest request)
         {
-            string orderField = request.SortingProperty.HasValue ? request.SortingProperty.Value.ToString() : nameof(request.Title);
+            string orderField = request.SortingProperty.HasValue ? request.SortingProperty.Value.ToString() : ContractOrderPropertiesEnum.Id.ToString();
             string orderMode = request.Sorting.HasValue ? request.Sorting.Value.ToString().ToUpper() : SortEnum.Desc.ToString().ToUpper();
+            var today = DateTime.Today;
 
-            return dbContext.Contracts
-                .WhereIf(!string.IsNullOrEmpty(request.Title), x => x.Title.ToUpper().Contains(request.Title.ToUpper()))
-                .AsNoTracking()
-                .OrderBy($"{orderField} {orderMode}");
+            var query = dbContext.Contracts
+                .Include(x => x.Player)
+                .Select(c => new { Contract = c,
+                    RemainingMonths = EF.Functions.DateDiffMonth(
+                        today > c.StartDate ? today : c.StartDate,
+                        c.EndDate),
+                })
+                .WhereIf(!string.IsNullOrEmpty(request.SearchText), x =>
+                    x.Contract.Title.ToUpper().Contains(request.SearchText.ToUpper()) ||
+                    x.Contract.Player.FirstName.ToUpper().Contains(request.SearchText.ToUpper()) ||
+                    x.Contract.Player.LastName.ToUpper().Contains(request.SearchText.ToUpper()) ||
+                    x.Contract.Player.DocumentNumber.ToUpper().Contains(request.SearchText.ToUpper()) ||
+                    x.RemainingMonths.ToString().Contains(request.SearchText))
+                .AsNoTracking();
+
+            return request.SortingProperty == ContractOrderPropertiesEnum.RemainingMonths
+                ? (orderMode == "DESC"
+                    ? query.OrderByDescending(x => x.RemainingMonths).Select(x => x.Contract)
+                    : query.OrderBy(x => x.RemainingMonths).Select(x => x.Contract))
+                : query.Select(x => x.Contract).OrderBy($"{orderField} {orderMode}");
         }
     }
 }

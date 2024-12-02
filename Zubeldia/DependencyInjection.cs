@@ -16,6 +16,8 @@
     using Zubeldia.Providers.Repositories;
     using Zubeldia.Providers.Repositories.User;
     using Zubeldia.Services;
+    using Zubeldia.Services.Files;
+    using Zubeldia.Services.Player;
     using Zubeldia.Services.Session;
 
     [ExcludeFromCodeCoverage]
@@ -59,6 +61,7 @@
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserDao, UserDao>();
             services.AddScoped<IContractDao, ContractDao>();
+            services.AddScoped<IPlayerDao, PlayerDao>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -67,7 +70,9 @@
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenConfiguration, TokenService>();
             services.AddScoped<IContractService, ContractService>();
+            services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IPdfContractProcessor, PdfContractProcessor>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
         }
 
         private static void AddValidators(this IServiceCollection services)

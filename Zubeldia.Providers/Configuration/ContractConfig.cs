@@ -14,8 +14,8 @@
             builder.Property(x => x.PlayerId).IsRequired().HasColumnOrder(1);
             builder.Property(x => x.Title).IsRequired().HasMaxLength(50).HasColumnOrder(2);
             builder.Property(x => x.File).IsRequired().HasColumnOrder(3);
-            builder.Property(x => x.StartDate).IsRequired().HasColumnOrder(4);
-            builder.Property(x => x.EndDate).IsRequired().HasColumnOrder(5);
+            builder.Property(x => x.StartDate).HasColumnOrder(4);
+            builder.Property(x => x.EndDate).HasColumnOrder(5);
             builder.Property(x => x.Type).IsRequired().HasColumnOrder(6);
 
             builder.HasOne(x => x.Player)

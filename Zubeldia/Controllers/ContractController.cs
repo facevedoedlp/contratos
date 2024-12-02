@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Zubeldia.Authorization;
     using Zubeldia.Commons.Enums.Permission;
+    using Zubeldia.Domain.Dtos.Commons;
     using Zubeldia.Domain.Dtos.Contract;
     using Zubeldia.Domain.Dtos.Contract.GetContractDto;
     using Zubeldia.Domain.Entities.Base;
@@ -14,6 +15,9 @@
     public class ContractController(IContractService contractService)
         : ZubeldiaControllerBase
     {
+        [HttpGet("types")]
+        public IEnumerable<KeyNameDto> GetTypes() => contractService.GetTypes();
+
         [HttpGet]
         [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.View)]
         public async Task<SearchResultPage<GetContractsDto>> GetAsync([FromQuery] GetContractsRequest request) => await contractService.GetByFiltersWithPaginationAsync(request);

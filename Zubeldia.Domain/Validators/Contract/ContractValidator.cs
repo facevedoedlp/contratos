@@ -2,9 +2,7 @@
 {
     using FluentValidation;
     using Zubeldia.Commons;
-    using Zubeldia.Commons.Constants;
     using Zubeldia.Domain.Dtos.Contract;
-    using Zubeldia.Dtos.Models.User;
 
     public class ContractValidator : AbstractValidator<CreateContractRequest>
     {
@@ -19,8 +17,6 @@
 
             RuleFor(x => x.Type)
               .Cascade(CascadeMode.Stop)
-              .NotEmpty()
-              .WithMessage(MessageUtils.MandatoryField(nameof(CreateContractRequest.Type)))
               .IsInEnum()
               .WithMessage(MessageUtils.NotExistInEnum(nameof(CreateContractRequest.Type)));
 

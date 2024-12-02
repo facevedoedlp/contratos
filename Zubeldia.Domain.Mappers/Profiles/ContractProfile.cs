@@ -20,24 +20,24 @@
                         {
                             return null;
                         }
-                        using var memoryStream = new MemoryStream();
-                        src.File.CopyTo(memoryStream);
-                        return memoryStream.ToArray();
+                        using var streamReader = new StreamReader(src.File.OpenReadStream());
+                        return streamReader.ReadToEndAsync().Result;
                     }))
                 .ForMember(dest => dest.StartDate, opt => opt.Ignore())
                 .ForMember(dest => dest.EndDate, opt => opt.Ignore());
 
             CreateMap<SearchResultPage<Contract>, SearchResultPage<GetContractsDto>>();
 
-            CreateMap<Contract, GetContractsDto>();
+            CreateMap<Contract, GetContractsDto>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.DisplayValue()));
 
             CreateMap<Contract, GetContractDto>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.DisplayValue()))
                 .ForPath(dest => dest.Player, opt => opt.MapFrom(src => new GetContractPlayerDto
                 {
-                    FirstName = src.Player.Name,
+                    FirstName = src.Player.FirstName,
                     LastName = src.Player.LastName,
-                    DocumentNumber = src.Player.DocumentNumber
+                    DocumentNumber = src.Player.DocumentNumber,
                 }));
 
             CreateMap<ContractSalary, GetContractSalaryDto>()

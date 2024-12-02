@@ -35,53 +35,12 @@ public class PdfContractProcessor : IPdfContractProcessor
         return text.ToString();
     }
 
-    private string CleanText(string text)
-    {
-        if (string.IsNullOrEmpty(text)) return string.Empty;
-
-        // Normalizar el texto usando un diccionario para evitar problemas con las comillas
-        var replacements = new Dictionary<string, string>
-            {
-                { "\u00A1", "i" },     // ¡
-                { "\u2010", "-" },     // ‐
-                { "\u2013", "-" },     // –
-                { "\u2015", "-" },     // ―
-                { "\u201C", "\"" },    // " comilla doble de apertura
-                { "\u201D", "\"" },    // " comilla doble de cierre
-                { "\u2018", "'" },     // ' comilla simple de apertura
-                { "\u2019", "'" },     // ' comilla simple de cierre
-                { "\u2026", "..." },   // …
-                { "\u00ED", "i" },     // í
-                { "\u00F3", "o" },     // ó
-                { "\u00E1", "a" },     // á
-                { "\u00E9", "e" },     // é
-                { "\u00FA", "u" },     // ú
-                { "\u00F1", "n" },     // ñ
-                { "\r", " " },
-                { "|", " " },
-                { "\n", " " }
-            };
-
-        foreach (var replacement in replacements)
-        {
-            text = text.Replace(replacement.Key, replacement.Value);
-        }
-
-        // Limpiar espacios múltiples
-        text = Regex.Replace(text, @"\s+", " ");
-
-        return text.Trim();
-    }
-
     private (Contract contract, List<ContractSalary> salaries) ParseContractData(string pdfText, Contract contract)
     {
-        // Extraer fechas del contrato
         ParseContractHeaderData(pdfText, contract);
 
-        // Extraer salarios
         var salaries = ParseSalariesData(pdfText);
 
-        // Extraer Objetivos
         var objetives = ParseObjetivesData(pdfText);
 
         contract.Salaries = salaries;
@@ -156,9 +115,65 @@ public class PdfContractProcessor : IPdfContractProcessor
 
     private List<ContractObjective> ParseObjetivesData(string pdfText)
     {
-        var objetives = new List<ContractObjective>();
+        var objectives = new List<ContractObjective>();
 
-        return objetives;
+        // Patrón que maneja las fechas con "de" pegado o separado
+        var objectivePattern = @"Del\s*(\d{1,2})(?:de|\s+de)\s*(\w+)(?:\s+de|\s+del)\s*(\d{4})\s*al\s*(\d{1,2})(?:de|\s+de)\s*(\w+)(?:\s+de|\s+del)\s*(\d{4}):\s*o\s*La\s*suma\s*de\s*(?:un |dos |tres |cuatro )?(?:millon(?:es)? )?[^(]*\((\d[\d\.,]+),00\s*\$\)";
+
+        var matches = Regex.Matches(pdfText, objectivePattern, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        foreach (Match match in matches)
+        {
+            try
+            {
+                // Construir las fechas
+                var startDateStr = $"{match.Groups[1].Value} de {match.Groups[2].Value} de {match.Groups[3].Value}";
+                var endDateStr = $"{match.Groups[4].Value} de {match.Groups[5].Value} de {match.Groups[6].Value}";
+
+                var startDate = ParseSpanishDate(startDateStr);
+                var endDate = ParseSpanishDate(endDateStr);
+
+                var amountStr = match.Groups[7].Value.Replace(".", "");
+                var amount = decimal.Parse(amountStr);
+
+                // Extraer el texto para la descripción
+                var startIndex = match.Index + match.Length;
+                var nextDelIndex = pdfText.IndexOf("Del", startIndex, StringComparison.OrdinalIgnoreCase);
+                if (nextDelIndex == -1) nextDelIndex = pdfText.Length;
+                var textBlock = pdfText.Substring(startIndex, nextDelIndex - startIndex);
+
+                var isRepeatable = textBlock.Contains("cada vez", StringComparison.OrdinalIgnoreCase);
+
+                var descriptionMatch = Regex.Match(textBlock, @"cada vez que el JUGADOR\s+(.*?)(?:\.|\s*Las sumas)", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                var description = descriptionMatch.Success ?
+                    descriptionMatch.Groups[1].Value.Trim() :
+                    string.Empty;
+
+                var objective = new ContractObjective
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Amount = amount,
+                    CurrencyId = 1,
+                    Description = description,
+                    IsRepeatable = isRepeatable,
+                    TimesAchieved = 0
+                };
+
+                objectives.Add(objective);
+
+                Console.WriteLine($"Encontrado objetivo: {startDate:dd/MM/yyyy} - {endDate:dd/MM/yyyy}: ${amount:N2}");
+                Console.WriteLine($"Descripción: {objective.Description}");
+                Console.WriteLine($"Es repetible: {objective.IsRepeatable}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error procesando objetivo: {ex.Message}");
+                Console.WriteLine($"Texto del match: {match.Value}");
+            }
+        }
+
+        return objectives;
     }
 
     private DateTime ParseSpanishDate(string spanishDate)
@@ -168,7 +183,7 @@ public class PdfContractProcessor : IPdfContractProcessor
             {"enero", 1}, {"febrero", 2}, {"marzo", 3},
             {"abril", 4}, {"mayo", 5}, {"junio", 6},
             {"julio", 7}, {"agosto", 8}, {"septiembre", 9},
-            {"octubre", 10}, {"noviembre", 11}, {"diciembre", 12}
+            {"octubre", 10}, {"noviembre", 11}, {"diciembre", 12},
         };
 
         // Limpiar y normalizar la fecha
@@ -188,5 +203,82 @@ public class PdfContractProcessor : IPdfContractProcessor
         var year = int.Parse(parts[parts.Length - 1]);
 
         return new DateTime(year, month, day);
+    }
+
+    private string CleanText(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+
+        var replacements = new Dictionary<string, string>
+        {
+            // Caracteres especiales básicos
+            { "\u00A1", "i" },     // ¡
+            { "\u2010", "-" },     // ‐
+            { "\u2013", "-" },     // –
+            { "\u2015", "-" },     // ―
+            { "\u201C", "\"" },    // " comilla doble de apertura
+            { "\u201D", "\"" },    // " comilla doble de cierre
+            { "\u2018", "'" },     // ' comilla simple de apertura
+            { "\u2019", "'" },     // ' comilla simple de cierre
+            { "\u2026", "..." },   // …
+            // Vocales acentuadas
+            { "\u00ED", "i" },     // í
+            { "\u00F3", "o" },     // ó
+            { "\u00E1", "a" },     // á
+            { "\u00E9", "e" },     // é
+            { "\u00FA", "u" },     // ú
+            { "\u00F1", "n" },     // ñ
+            // Mayúsculas acentuadas
+            { "\u00C1", "A" },     // Á
+            { "\u00C9", "E" },     // É
+            { "\u00CD", "I" },     // Í
+            { "\u00D3", "O" },     // Ó
+            { "\u00DA", "U" },     // Ú
+            { "\u00D1", "N" },     // Ñ
+            // Otros caracteres especiales comunes en PDFs
+            { "º", "" },           // símbolo de grado
+            { "°", "" },           // símbolo de grado alternativo
+            { "ª", "a" },          // ordinal femenino
+            { "²", "2" },          // superíndice 2
+            { "³", "3" },          // superíndice 3
+            { "½", "1/2" },        // fracción un medio
+            { "¼", "1/4" },        // fracción un cuarto
+            { "¾", "3/4" },        // fracción tres cuartos
+            { "\u0092", "'" },     // comilla simple alternativa
+            { "\u0093", "\"" },    // comilla doble alternativa
+            { "\u0094", "\"" },    // comilla doble alternativa
+            { "\u0096", "-" },     // guión alternativo
+            { "\u0097", "-" },     // guión alternativo
+            // Caracteres de control y espaciado
+            { "\r", " " },
+            { "\n", " " },
+            { "\t", " " },
+            { "|", " " },
+            { "\f", " " },         // form feed
+            { "\v", " " },         // vertical tab
+            // Símbolos monetarios y matemáticos comunes
+            { "€", "EUR" },
+            { "£", "GBP" },
+            { "¥", "JPY" },
+            { "±", "+-" },
+            { "×", "x" },
+            { "÷", "/" },
+        };
+
+        foreach (var replacement in replacements)
+        {
+            text = text.Replace(replacement.Key, replacement.Value);
+        }
+
+        // Limpiar espacios múltiples
+        text = Regex.Replace(text, @"\s+", " ");
+
+        // Limpiar caracteres no imprimibles que no estén en el diccionario
+        text = Regex.Replace(text, @"[^\x20-\x7E]", " ");
+
+        return text.Trim();
     }
 }

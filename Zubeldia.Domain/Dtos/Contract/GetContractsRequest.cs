@@ -4,7 +4,6 @@
 
     public class GetContractsRequest : SearchCriteria
     {
-        public string? Title { get; set; }
         public ContractOrderPropertiesEnum? SortingProperty { get; set; }
     }
 }

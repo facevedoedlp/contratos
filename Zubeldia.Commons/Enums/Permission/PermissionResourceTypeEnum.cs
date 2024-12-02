@@ -15,5 +15,8 @@
 
         [Display(Name = "Contratos")]
         Contracts = 3,
+
+        [Display(Name = "Jugadores")]
+        Players = 3,
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Zubeldia.Domain.Dtos.Commons
 {
-    public class KeyNameDTO
+    public class KeyNameDto
     {
         public int Id { get; set; }
         public string? Code { get; set; }

@@ -37,7 +37,7 @@ namespace Zubeldia.Providers.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(5);
 
@@ -56,7 +56,7 @@ namespace Zubeldia.Providers.Migrations
                         .HasColumnType("int")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(4);
 
@@ -93,7 +93,7 @@ namespace Zubeldia.Providers.Migrations
 
                     b.Property<DateTime?>("CompletionDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(7);
 
                     b.Property<int>("ContractId")
                         .HasColumnType("int")
@@ -111,19 +111,19 @@ namespace Zubeldia.Providers.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(6);
 
-                    b.Property<bool>("IsCompleted")
+                    b.Property<bool>("IsRepeatable")
                         .HasColumnType("bit")
                         .HasColumnOrder(8);
 
-                    b.Property<int?>("Season")
-                        .HasColumnType("int")
-                        .HasColumnOrder(5);
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(5);
+
+                    b.Property<int>("TimesAchieved")
+                        .HasColumnType("int")
+                        .HasColumnOrder(9);
 
                     b.HasKey("Id");
 
@@ -263,17 +263,17 @@ namespace Zubeldia.Providers.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnOrder(3);
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnOrder(1);
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnOrder(2);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasColumnOrder(1);
 
                     b.HasKey("Id");
 

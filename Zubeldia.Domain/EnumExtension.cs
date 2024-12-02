@@ -11,11 +11,11 @@
     [ExcludeFromCodeCoverage]
     public static class EnumExtension
     {
-        public static List<KeyNameDTO> GetKeyNameFromEnum<T>(HashSet<string> excludeValues = null)
+        public static List<KeyNameDto> GetKeyNameFromEnum<T>(HashSet<string> excludeValues = null)
             where T : struct, IConvertible
         {
             var source = Enum.GetValues(typeof(T));
-            var list = new List<KeyNameDTO>();
+            var list = new List<KeyNameDto>();
 
             foreach (T value in source)
             {
@@ -26,7 +26,7 @@
                     continue;
                 }
 
-                list.Add(new KeyNameDTO()
+                list.Add(new KeyNameDto()
                 {
                     Id = Convert.ToInt32(value),
                     Code = value.ToString(),
@@ -37,10 +37,10 @@
             return list;
         }
 
-        public static KeyNameDTO GetKeyNameDTOFromEnumValue<T>(this T value)
+        public static KeyNameDto GetKeyNameDTOFromEnumValue<T>(this T value)
             where T : struct, IConvertible
         {
-            return new KeyNameDTO
+            return new KeyNameDto
             {
                 Id = Convert.ToInt32(value),
                 Code = value.ToString(),
@@ -54,13 +54,13 @@
             return GetDisplayValue(ref value);
         }
 
-        public static IEnumerable<KeyNameDTO> GetSelectListFrom<T>(IList<T> source, bool getWithDisplayName = false)
+        public static IEnumerable<KeyNameDto> GetSelectListFrom<T>(IList<T> source, bool getWithDisplayName = false)
             where T : struct, IConvertible
         {
             return GetSelectListFrom(source, null, false, getWithDisplayName);
         }
 
-        public static IEnumerable<KeyNameDTO> GetSelectListFrom<T>(IList<T> source, object selectedValue, bool getWithDisplayName = false)
+        public static IEnumerable<KeyNameDto> GetSelectListFrom<T>(IList<T> source, object selectedValue, bool getWithDisplayName = false)
             where T : struct, IConvertible
         {
             return GetSelectListFrom(source, selectedValue, false);
@@ -72,10 +72,10 @@
             return (T)Enum.Parse(typeof(T), value);
         }
 
-        public static IEnumerable<KeyNameDTO> GetSelectListFrom<T>(IList<T> source, object selectedValue, bool orderByName, bool getWithDisplayName = false)
+        public static IEnumerable<KeyNameDto> GetSelectListFrom<T>(IList<T> source, object selectedValue, bool orderByName, bool getWithDisplayName = false)
             where T : struct, IConvertible
         {
-            var items = new List<KeyNameDTO>();
+            var items = new List<KeyNameDto>();
 
             var displayAttributeType = typeof(DisplayAttribute);
 
@@ -88,7 +88,7 @@
 
                 var intValue = (int)Enum.Parse(typeof(T), value.ToString());
 
-                items.Add(new KeyNameDTO()
+                items.Add(new KeyNameDto()
                 {
                     Id = Convert.ToInt32(value),
                     Code = value.ToString(),

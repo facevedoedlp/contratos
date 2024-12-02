@@ -4,7 +4,7 @@
 
     public class Player : Entity<int>
     {
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DocumentNumber { get; set; }
         public DateTime BirthDate { get; set; }

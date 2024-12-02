@@ -2,6 +2,9 @@
 {
     using AutoMapper;
     using FluentValidation;
+    using Grogu.Domain;
+    using Zubeldia.Commons.Enums;
+    using Zubeldia.Domain.Dtos.Commons;
     using Zubeldia.Domain.Dtos.Contract;
     using Zubeldia.Domain.Dtos.Contract.GetContractDto;
     using Zubeldia.Domain.Entities;
@@ -10,9 +13,10 @@
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Dtos.Models.Commons;
 
-    public class ContractService(IContractDao contractDao, IPdfContractProcessor pdfContractProcessor, IMapper mapper, IValidator<CreateContractRequest> contractValidator)
+    public class ContractService(IContractDao contractDao, IFileStorageService fileStorageService, IPdfContractProcessor pdfContractProcessor, IMapper mapper, IValidator<CreateContractRequest> contractValidator)
               : IContractService
     {
+        public IEnumerable<KeyNameDto> GetTypes() => EnumExtension.GetKeyNameFromEnum<ContractTypeEnum>();
         public async Task<GetContractDto> GetByIdAsync(int id)
         {
             var contract = await contractDao.GetByIdAsync(id);
@@ -34,13 +38,17 @@
 
                 if (validatorResult.IsValid)
                 {
+                    string fileUri = string.Empty;
+                    if (request.File != null && request.File.Length > 0) fileUri = await fileStorageService.SaveFileAsync(request.File, "Contracts");
+
                     Contract contract = mapper.Map<Contract>(request);
 
-                    await pdfContractProcessor.ProcessContractPdf(request.File, contract);
+                    if (request.Type != ContractTypeEnum.Afa) await pdfContractProcessor.ProcessContractPdf(request.File, contract);
+
+                    contract.File = fileUri;
 
                     await contractDao.AddAsync(contract);
                 }
-
                 return response;
             }
             catch (Exception)
