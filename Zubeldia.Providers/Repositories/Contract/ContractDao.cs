@@ -39,29 +39,39 @@
 
         private IQueryable<Contract> GetByFilters(GetContractsRequest request)
         {
-            string orderField = request.SortingProperty.HasValue ? request.SortingProperty.Value.ToString() : ContractOrderPropertiesEnum.Id.ToString();
-            string orderMode = request.Sorting.HasValue ? request.Sorting.Value.ToString().ToUpper() : SortEnum.Desc.ToString().ToUpper();
+            string orderField = request.SortingProperty.HasValue
+                ? request.SortingProperty.Value.ToString()
+                : ContractOrderPropertiesEnum.RemainingMonths.ToString();
+
+            string orderMode = request.Sorting.HasValue
+                ? request.Sorting.Value.ToString().ToUpper()
+                : SortEnum.Asc.ToString().ToUpper();
             var today = DateTime.Today;
 
             var query = dbContext.Contracts
                 .Include(x => x.Player)
-                .Select(c => new { Contract = c,
+                .Select(c => new
+                {
+                    Contract = c,
                     RemainingMonths = EF.Functions.DateDiffMonth(
                         today > c.StartDate ? today : c.StartDate,
                         c.EndDate),
                 })
                 .WhereIf(!string.IsNullOrEmpty(request.SearchText), x =>
-                    x.Contract.Title.ToUpper().Contains(request.SearchText.ToUpper()) ||
                     x.Contract.Player.FirstName.ToUpper().Contains(request.SearchText.ToUpper()) ||
                     x.Contract.Player.LastName.ToUpper().Contains(request.SearchText.ToUpper()) ||
                     x.Contract.Player.DocumentNumber.ToUpper().Contains(request.SearchText.ToUpper()) ||
                     x.RemainingMonths.ToString().Contains(request.SearchText))
                 .AsNoTracking();
 
-            return request.SortingProperty == ContractOrderPropertiesEnum.RemainingMonths
+            return (request.SortingProperty == ContractOrderPropertiesEnum.RemainingMonths || !request.SortingProperty.HasValue)
                 ? (orderMode == "DESC"
-                    ? query.OrderByDescending(x => x.RemainingMonths).Select(x => x.Contract)
-                    : query.OrderBy(x => x.RemainingMonths).Select(x => x.Contract))
+                    ? query.OrderByDescending(x => x.RemainingMonths.HasValue)
+                          .ThenByDescending(x => x.RemainingMonths)
+                          .Select(x => x.Contract)
+                    : query.OrderByDescending(x => x.RemainingMonths.HasValue)
+                          .ThenBy(x => x.RemainingMonths)
+                          .Select(x => x.Contract))
                 : query.Select(x => x.Contract).OrderBy($"{orderField} {orderMode}");
         }
     }

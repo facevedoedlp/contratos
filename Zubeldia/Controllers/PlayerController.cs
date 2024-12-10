@@ -1,8 +1,6 @@
 ﻿namespace Zubeldia.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Zubeldia.Authorization;
-    using Zubeldia.Commons.Enums.Permission;
     using Zubeldia.Domain.Dtos.Commons;
     using Zubeldia.Domain.Interfaces.Services;
 

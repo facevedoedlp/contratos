@@ -62,6 +62,7 @@
             services.AddScoped<IUserDao, UserDao>();
             services.AddScoped<IContractDao, ContractDao>();
             services.AddScoped<IPlayerDao, PlayerDao>();
+            services.AddScoped<ICurrencyDao, CurrencyDao>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -71,6 +72,7 @@
             services.AddScoped<ITokenConfiguration, TokenService>();
             services.AddScoped<IContractService, ContractService>();
             services.AddScoped<IPlayerService, PlayerService>();
+            services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<IPdfContractProcessor, PdfContractProcessor>();
             services.AddScoped<IFileStorageService, FileStorageService>();
         }
@@ -88,6 +90,7 @@
                 m.AddProfile(new UserProfile());
                 m.AddProfile(new ValidatorResultProfile());
                 m.AddProfile(new ContractProfile());
+                m.AddProfile(new FilterOptionsProfile());
             }).CreateMapper());
         }
 

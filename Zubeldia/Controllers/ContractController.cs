@@ -9,7 +9,6 @@
     using Zubeldia.Domain.Entities.Base;
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Dtos.Models.Commons;
-    using Zubeldia.Services;
 
     [ApiController]
     [Route("api/contract")]

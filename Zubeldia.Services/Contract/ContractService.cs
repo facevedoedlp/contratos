@@ -59,9 +59,6 @@
                     if (request.File != null && request.File.Length > 0) fileUri = await fileStorageService.SaveFileAsync(request.File, "Contracts");
 
                     Contract contract = mapper.Map<Contract>(request);
-
-                    if (request.Type != ContractTypeEnum.Afa) await pdfContractProcessor.ProcessContractPdf(request.File, contract);
-
                     contract.File = fileUri;
 
                     await contractDao.AddAsync(contract);

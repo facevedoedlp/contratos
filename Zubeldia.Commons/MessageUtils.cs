@@ -6,6 +6,7 @@
     {
         public const string Required = "El campo {0} es requerido.";
         public const string NoRecordsFound = "No hay registros para esta búsqueda.";
+        private const string MessageStartDateMustBeLessThanEndDate = "La fecha de inicio debe ser menor o igual a la fecha de fin.";
         private const string MessageDateMustBeGreaterThanDate = "La fecha debe ser mayor a {0}";
         private const string MessageDateGreaterThanOrEqualToDate = "La fecha debe ser mayor o igual a {0}";
         private const string MessageDateGreaterThanOrEqualToLastDate = "La fecha debe ser mayor o igual a la última {0}";
@@ -45,6 +46,7 @@
         public static string MustBePositiveValue(string fieldName) => string.Format(MessageMustBePositiveNumber, fieldName);
         public static string MustBeGreaterThanZero(string fieldName) => string.Format(MessageMustBeGreaterThanZero, fieldName);
         public static string MustBeGreaterOrEqualThanZero(string fieldName) => string.Format(MessageMustBeGreaterOrEqualThanZero, fieldName);
+        public static string StartDateMustBeLessThanEndDate() => MessageStartDateMustBeLessThanEndDate;
         public static string DateNotBeGreaterThan(string fieldName) => string.Format(MessageDateGreaterThanDate, fieldName);
         public static string DateMustBeGreaterThanOrEqualTo(string fieldName) => string.Format(MessageDateGreaterThanOrEqualToDate, fieldName);
         public static string DateMustBeGreaterThan(string fieldName) => string.Format(MessageDateMustBeGreaterThanDate, fieldName);

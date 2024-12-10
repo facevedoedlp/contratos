@@ -217,9 +217,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Title": {
-                    "type": "string"
-                  },
                   "PlayerId": {
                     "type": "integer",
                     "format": "int32"
@@ -228,22 +225,64 @@
                     "type": "string",
                     "format": "binary"
                   },
+                  "StartDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "EndDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
                   "Type": {
                     "$ref": "#/components/schemas/ContractTypeEnum"
+                  },
+                  "IsAddendum": {
+                    "type": "boolean"
+                  },
+                  "Objectives": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreateContractObjectiveRequest"
+                    }
+                  },
+                  "Salaries": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreateContractSalaryRequest"
+                    }
+                  },
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
                   }
                 }
               },
               "encoding": {
-                "Title": {
-                  "style": "form"
-                },
                 "PlayerId": {
                   "style": "form"
                 },
                 "File": {
                   "style": "form"
                 },
+                "StartDate": {
+                  "style": "form"
+                },
+                "EndDate": {
+                  "style": "form"
+                },
                 "Type": {
+                  "style": "form"
+                },
+                "IsAddendum": {
+                  "style": "form"
+                },
+                "Objectives": {
+                  "style": "form"
+                },
+                "Salaries": {
+                  "style": "form"
+                },
+                "Id": {
                   "style": "form"
                 }
               }
@@ -337,6 +376,44 @@
         }
       }
     },
+    "/api/currency/dropdown": {
+      "get": {
+        "tags": [
+          "Currency"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/player/dropdown/{filter}": {
       "get": {
         "tags": [
@@ -409,6 +486,86 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "CreateContractObjectiveRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currencyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isRepeatable": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateContractSalaryRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currencyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exchangeRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalRecognition": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "installmentsCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "installmentRecognition": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "Error": {
         "type": "object",

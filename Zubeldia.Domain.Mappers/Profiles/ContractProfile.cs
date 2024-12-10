@@ -16,20 +16,25 @@
                 .ForMember(dest => dest.File, opt =>
                     opt.MapFrom((src, dest) =>
                     {
-                        if (src.File == null || src.File.Length == 0)
-                        {
-                            return null;
-                        }
+                        if (src.File == null || src.File.Length == 0) return null;
+
                         using var streamReader = new StreamReader(src.File.OpenReadStream());
                         return streamReader.ReadToEndAsync().Result;
-                    }))
-                .ForMember(dest => dest.StartDate, opt => opt.Ignore())
-                .ForMember(dest => dest.EndDate, opt => opt.Ignore());
+                    }));
+
+            CreateMap<CreateContractObjectiveRequest, ContractObjective>()
+                .ForMember(dest => dest.CompletionDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TimesAchieved, opt => opt.MapFrom(src => 0));
+
+            CreateMap<CreateContractSalaryRequest, ContractSalary>();
 
             CreateMap<SearchResultPage<Contract>, SearchResultPage<GetContractsDto>>();
 
             CreateMap<Contract, GetContractsDto>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.DisplayValue()));
+
+            CreateMap<ContractSalary, GetContractSalaryDto>();
+            CreateMap<ContractObjective, GetContractObjectiveDto>();
 
             CreateMap<Contract, GetContractDto>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.DisplayValue()))

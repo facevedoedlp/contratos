@@ -41,7 +41,7 @@ public class PdfContractProcessor : IPdfContractProcessor
 
         var salaries = ParseSalariesData(pdfText);
 
-        var objetives = ParseObjetivesData(pdfText);
+        var objetives = ParseObjectivesData(pdfText);
 
         contract.Salaries = salaries;
 
@@ -113,7 +113,7 @@ public class PdfContractProcessor : IPdfContractProcessor
         return salaries;
     }
 
-    private List<ContractObjective> ParseObjetivesData(string pdfText)
+    private List<ContractObjective> ParseObjectivesData(string pdfText)
     {
         var objectives = new List<ContractObjective>();
 

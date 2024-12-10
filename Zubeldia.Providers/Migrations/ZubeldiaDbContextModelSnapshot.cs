@@ -39,12 +39,16 @@ namespace Zubeldia.Providers.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(5);
+                        .HasColumnOrder(4);
 
                     b.Property<string>("File")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(3);
+                        .HasColumnOrder(2);
+
+                    b.Property<bool>("IsAddendum")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(6);
 
                     b.Property<string>("LastModificationBy")
                         .HasColumnType("nvarchar(max)");
@@ -58,17 +62,11 @@ namespace Zubeldia.Providers.Migrations
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(4);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(3);
 
                     b.Property<short>("Type")
                         .HasColumnType("smallint")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 

@@ -8,23 +8,38 @@
     {
         public ContractValidator()
         {
-            RuleFor(x => x.Title)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage(MessageUtils.MandatoryField(nameof(CreateContractRequest.Title)))
-                .MaximumLength(50)
-                .WithMessage(MessageUtils.ExceedMaximumLength(nameof(CreateContractRequest.Title), 50));
-
             RuleFor(x => x.Type)
               .Cascade(CascadeMode.Stop)
               .IsInEnum()
-              .WithMessage(MessageUtils.NotExistInEnum(nameof(CreateContractRequest.Type)));
+              .WithMessage(MessageUtils.NotExistInEnum("Tipo de contrato"));
 
             RuleFor(x => x.PlayerId)
               .NotEmpty()
-              .WithMessage(MessageUtils.MandatoryField(nameof(CreateContractRequest.PlayerId)));
+              .WithMessage(MessageUtils.MandatoryField("Jugador"));
 
-            // TODO: Validar archivo
+            RuleFor(x => x.StartDate)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage(MessageUtils.MandatoryField("Fecha de inicio"))
+                .LessThanOrEqualTo(x => x.EndDate)
+                .When(x => x.EndDate != null)
+                .WithMessage(MessageUtils.StartDateMustBeLessThanEndDate());
+
+            RuleFor(x => x.EndDate)
+                .NotEmpty()
+                .WithMessage(MessageUtils.MandatoryField("Fecha de finalizacion"));
+
+            RuleFor(x => x.File)
+                .NotEmpty()
+                .WithMessage(MessageUtils.MandatoryField("Archivo"));
+
+            RuleForEach(x => x.Objectives)
+                .NotEmpty()
+                .SetValidator(m => new ContractObjectiveValidator());
+
+            RuleForEach(x => x.Salaries)
+                .NotEmpty()
+                .SetValidator(m => new ContractSalaryValidator());
         }
     }
 }

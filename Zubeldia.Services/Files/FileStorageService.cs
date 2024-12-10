@@ -17,7 +17,7 @@
             rootPath = Path.Combine(environment.ContentRootPath, relativePath);
         }
 
-        public  Stream GetFileStreamAsync(string fileRoute)
+        public Stream GetFileStreamAsync(string fileRoute)
         {
             if (string.IsNullOrEmpty(fileRoute)) throw new ArgumentNullException(nameof(fileRoute));
 
