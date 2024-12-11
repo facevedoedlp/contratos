@@ -26,8 +26,20 @@
                 .WithMessage(MessageUtils.StartDateMustBeLessThanEndDate());
 
             RuleFor(x => x.EndDate)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .WithMessage(MessageUtils.MandatoryField("Fecha de finalizacion"));
+                .WithMessage(MessageUtils.MandatoryField("Fecha de finalización"))
+                .GreaterThan(x => x.StartDate)
+                .WithMessage(MessageUtils.DateMustBeGreaterThan("Fecha de finalización"));
+
+            RuleFor(x => x.EarlyTerminationDate)
+                .Must((request, terminationDate) => !terminationDate.HasValue || (terminationDate >= request.StartDate && terminationDate <= request.EndDate))
+                .When(x => x.EarlyTerminationDate.HasValue)
+                .WithMessage("La fecha de terminación anticipada debe estar entre la fecha de inicio y fin del contrato");
+
+            RuleFor(x => x.ReleaseClause)
+                .Must(x => !x.HasValue || x.Value > 0)
+                .WithMessage(MessageUtils.MustBeGreaterThanZero("Cláusula de rescisión"));
 
             RuleFor(x => x.File)
                 .NotEmpty()
@@ -40,6 +52,10 @@
             RuleForEach(x => x.Salaries)
                 .NotEmpty()
                 .SetValidator(m => new ContractSalaryValidator());
+
+            RuleForEach(x => x.Trajectories)
+                .NotEmpty()
+                .SetValidator(m => new ContractTrajectoryValidator());
         }
     }
 }

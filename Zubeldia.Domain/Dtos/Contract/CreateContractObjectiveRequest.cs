@@ -6,6 +6,7 @@
     {
         public string Description { get; set; }
         public decimal Amount { get; set; }
+        public decimal ExchangeRate { get; set; }
         public int CurrencyId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

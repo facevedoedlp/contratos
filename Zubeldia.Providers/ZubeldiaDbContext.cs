@@ -41,6 +41,7 @@
         public virtual DbSet<Contract> Contracts { get; set; }
         public virtual DbSet<ContractObjective> ContractObjectives { get; set; }
         public virtual DbSet<ContractSalary> ContractSalaries { get; set; }
+        public virtual DbSet<ContractTrajectory> ContractTrajectories { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<RolePermission> RolePermissions { get; set; }

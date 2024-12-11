@@ -13,10 +13,12 @@
             builder.Property(x => x.Id).HasColumnOrder(0);
             builder.Property(x => x.PlayerId).IsRequired().HasColumnOrder(1);
             builder.Property(x => x.File).IsRequired().HasColumnOrder(2);
-            builder.Property(x => x.StartDate).HasColumnOrder(3);
-            builder.Property(x => x.EndDate).HasColumnOrder(4);
-            builder.Property(x => x.Type).IsRequired().HasColumnOrder(5);
-            builder.Property(x => x.IsAddendum).IsRequired().HasColumnOrder(6);
+            builder.Property(x => x.StartDate).IsRequired().HasColumnOrder(3);
+            builder.Property(x => x.EndDate).IsRequired().HasColumnOrder(4);
+            builder.Property(x => x.EarlyTerminationDate).HasColumnOrder(5);
+            builder.Property(x => x.Type).IsRequired().HasColumnOrder(6);
+            builder.Property(x => x.ReleaseClause).HasColumnOrder(7);
+            builder.Property(x => x.IsAddendum).IsRequired().HasColumnOrder(8);
 
             builder.HasOne(x => x.Player)
                 .WithMany(x => x.Contracts)
@@ -29,6 +31,11 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(x => x.Salaries)
+                .WithOne(x => x.Contract)
+                .HasForeignKey(x => x.ContractId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(x => x.Trajectories)
                 .WithOne(x => x.Contract)
                 .HasForeignKey(x => x.ContractId)
                 .OnDelete(DeleteBehavior.Restrict);

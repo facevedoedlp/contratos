@@ -4,26 +4,21 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Zubeldia.Domain.Entities;
 
-    public class ContractObjectiveConfig : IEntityTypeConfiguration<ContractObjective>
+    public class ContractTrajectoryConfig : IEntityTypeConfiguration<ContractTrajectory>
     {
-        public void Configure(EntityTypeBuilder<ContractObjective> builder)
+        public void Configure(EntityTypeBuilder<ContractTrajectory> builder)
         {
-            builder.ToTable("ContractObjectives");
+            builder.ToTable("ContractTrajectories");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnOrder(0);
             builder.Property(x => x.ContractId).IsRequired().HasColumnOrder(1);
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(150).HasColumnOrder(2);
+            builder.Property(x => x.PaymentDate).IsRequired().HasColumnOrder(2);
             builder.Property(x => x.Amount).IsRequired().HasPrecision(18, 2).HasColumnOrder(3);
             builder.Property(x => x.CurrencyId).IsRequired().HasColumnOrder(4);
-            builder.Property(x => x.ExchangeRate).IsRequired().HasColumnOrder(5);
-            builder.Property(x => x.StartDate).IsRequired().HasColumnOrder(6);
-            builder.Property(x => x.EndDate).IsRequired().HasColumnOrder(7);
-            builder.Property(x => x.CompletionDate).HasColumnOrder(8);
-            builder.Property(x => x.IsRepeatable).IsRequired().HasColumnOrder(9);
-            builder.Property(x => x.TimesAchieved).IsRequired().HasColumnOrder(10);
+            builder.Property(x => x.ExchangeRate).IsRequired().HasPrecision(18, 6).HasColumnOrder(5);
 
             builder.HasOne(x => x.Contract)
-                .WithMany(x => x.Objectives)
+                .WithMany(x => x.Trajectories)
                 .HasForeignKey(x => x.ContractId)
                 .OnDelete(DeleteBehavior.Restrict);
 

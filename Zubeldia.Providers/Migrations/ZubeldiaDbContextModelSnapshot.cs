@@ -37,7 +37,11 @@ namespace Zubeldia.Providers.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime?>("EarlyTerminationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(4);
 
@@ -48,7 +52,7 @@ namespace Zubeldia.Providers.Migrations
 
                     b.Property<bool>("IsAddendum")
                         .HasColumnType("bit")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(8);
 
                     b.Property<string>("LastModificationBy")
                         .HasColumnType("nvarchar(max)");
@@ -60,13 +64,18 @@ namespace Zubeldia.Providers.Migrations
                         .HasColumnType("int")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<decimal?>("ReleaseClause")
+                        .HasPrecision(19, 5)
+                        .HasColumnType("decimal(19,5)")
+                        .HasColumnOrder(7);
+
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(3);
 
                     b.Property<short>("Type")
                         .HasColumnType("smallint")
-                        .HasColumnOrder(5);
+                        .HasColumnOrder(6);
 
                     b.HasKey("Id");
 
@@ -91,7 +100,7 @@ namespace Zubeldia.Providers.Migrations
 
                     b.Property<DateTime?>("CompletionDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(8);
 
                     b.Property<int>("ContractId")
                         .HasColumnType("int")
@@ -109,19 +118,24 @@ namespace Zubeldia.Providers.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(7);
+
+                    b.Property<decimal>("ExchangeRate")
+                        .HasPrecision(19, 5)
+                        .HasColumnType("decimal(19,5)")
+                        .HasColumnOrder(5);
 
                     b.Property<bool>("IsRepeatable")
                         .HasColumnType("bit")
-                        .HasColumnOrder(8);
+                        .HasColumnOrder(9);
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2")
-                        .HasColumnOrder(5);
+                        .HasColumnOrder(6);
 
                     b.Property<int>("TimesAchieved")
                         .HasColumnType("int")
-                        .HasColumnOrder(9);
+                        .HasColumnOrder(10);
 
                     b.HasKey("Id");
 
@@ -163,23 +177,9 @@ namespace Zubeldia.Providers.Migrations
                         .HasColumnType("decimal(18,6)")
                         .HasColumnOrder(4);
 
-                    b.Property<decimal?>("InstallmentRecognition")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(9);
-
-                    b.Property<int?>("InstallmentsCount")
-                        .HasColumnType("int")
-                        .HasColumnOrder(8);
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2")
                         .HasColumnOrder(5);
-
-                    b.Property<decimal?>("TotalRecognition")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnOrder(7);
 
                     b.HasKey("Id");
 
@@ -188,6 +188,46 @@ namespace Zubeldia.Providers.Migrations
                     b.HasIndex("CurrencyId");
 
                     b.ToTable("ContractSalaries", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.ContractTrajectory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnOrder(3);
+
+                    b.Property<int>("ContractId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("ExchangeRate")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("decimal(18,6)")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("ContractTrajectories", (string)null);
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Currency", b =>
@@ -419,6 +459,25 @@ namespace Zubeldia.Providers.Migrations
                     b.Navigation("Currency");
                 });
 
+            modelBuilder.Entity("Zubeldia.Domain.Entities.ContractTrajectory", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Contract", "Contract")
+                        .WithMany("Trajectories")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("Currency");
+                });
+
             modelBuilder.Entity("Zubeldia.Domain.Entities.RolePermission", b =>
                 {
                     b.HasOne("Zubeldia.Domain.Entities.Permission", "Permission")
@@ -462,6 +521,8 @@ namespace Zubeldia.Providers.Migrations
                     b.Navigation("Objectives");
 
                     b.Navigation("Salaries");
+
+                    b.Navigation("Trajectories");
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Permission", b =>

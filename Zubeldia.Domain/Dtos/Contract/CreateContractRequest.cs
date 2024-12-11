@@ -10,9 +10,12 @@
         public IFormFile? File { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public DateTime? EarlyTerminationDate { get; set; }
         public ContractTypeEnum Type { get; set; }
+        public decimal? ReleaseClause { get; set; }
         public bool IsAddendum { get; set; }
         public IEnumerable<CreateContractObjectiveRequest> Objectives { get; set; } = new List<CreateContractObjectiveRequest>();
         public IEnumerable<CreateContractSalaryRequest> Salaries { get; set; } = new List<CreateContractSalaryRequest>();
+        public IEnumerable<CreateContractTrajectoryRequest> Trajectories { get; set; } = new List<CreateContractTrajectoryRequest>();
     }
 }

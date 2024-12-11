@@ -94,9 +94,6 @@ public class PdfContractProcessor : IPdfContractProcessor
                     Amount = amount,
                     CurrencyId = 1,
                     ExchangeRate = 1,
-                    InstallmentsCount = 12,
-                    TotalRecognition = amount * 12,
-                    InstallmentRecognition = amount,
                 };
 
                 salaries.Add(salary);

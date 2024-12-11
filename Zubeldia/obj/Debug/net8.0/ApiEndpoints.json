@@ -126,8 +126,18 @@
         "IsRequired": false
       },
       {
+        "Name": "EarlyTerminationDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
         "Name": "Type",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ReleaseClause",
+        "Type": "System.Nullable\u00601[[System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -143,6 +153,11 @@
       {
         "Name": "Salaries",
         "Type": "System.Collections.Generic.IEnumerable\u00601[[Zubeldia.Domain.Dtos.Contract.CreateContractSalaryRequest, Zubeldia.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Trajectories",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Zubeldia.Domain.Dtos.Contract.CreateContractTrajectoryRequest, Zubeldia.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {

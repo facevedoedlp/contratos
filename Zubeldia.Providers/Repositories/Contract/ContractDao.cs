@@ -66,10 +66,10 @@
 
             return (request.SortingProperty == ContractOrderPropertiesEnum.RemainingMonths || !request.SortingProperty.HasValue)
                 ? (orderMode == "DESC"
-                    ? query.OrderByDescending(x => x.RemainingMonths.HasValue)
+                    ? query.OrderByDescending(x => x.RemainingMonths)
                           .ThenByDescending(x => x.RemainingMonths)
                           .Select(x => x.Contract)
-                    : query.OrderByDescending(x => x.RemainingMonths.HasValue)
+                    : query.OrderByDescending(x => x.RemainingMonths)
                           .ThenBy(x => x.RemainingMonths)
                           .Select(x => x.Contract))
                 : query.Select(x => x.Contract).OrderBy($"{orderField} {orderMode}");

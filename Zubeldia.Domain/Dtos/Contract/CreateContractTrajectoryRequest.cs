@@ -2,12 +2,11 @@
 {
     using Zubeldia.Domain.Entities.Base;
 
-    public class CreateContractSalaryRequest : Entity<int?>
+    public class CreateContractTrajectoryRequest : Entity<int?>
     {
+        public DateTime PaymentDate { get; set; }
         public decimal Amount { get; set; }
         public int CurrencyId { get; set; }
         public decimal ExchangeRate { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
     }
 }

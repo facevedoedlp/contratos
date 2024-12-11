@@ -17,9 +17,6 @@
             builder.Property(x => x.ExchangeRate).IsRequired().HasPrecision(18, 6).HasColumnOrder(4);
             builder.Property(x => x.StartDate).IsRequired().HasColumnOrder(5);
             builder.Property(x => x.EndDate).IsRequired().HasColumnOrder(6);
-            builder.Property(x => x.TotalRecognition).HasPrecision(18, 2).HasColumnOrder(7);
-            builder.Property(x => x.InstallmentsCount).HasColumnOrder(8);
-            builder.Property(x => x.InstallmentRecognition).HasPrecision(18, 2).HasColumnOrder(9);
 
             builder.HasOne(x => x.Contract)
                 .WithMany(x => x.Salaries)

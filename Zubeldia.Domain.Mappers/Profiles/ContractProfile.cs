@@ -27,6 +27,7 @@
                 .ForMember(dest => dest.TimesAchieved, opt => opt.MapFrom(src => 0));
 
             CreateMap<CreateContractSalaryRequest, ContractSalary>();
+            CreateMap<CreateContractTrajectoryRequest, ContractTrajectory>();
 
             CreateMap<SearchResultPage<Contract>, SearchResultPage<GetContractsDto>>();
 

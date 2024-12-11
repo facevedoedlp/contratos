@@ -93,9 +93,11 @@ namespace Zubeldia.Providers.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
                     File = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EarlyTerminationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<short>(type: "smallint", nullable: false),
+                    ReleaseClause = table.Column<decimal>(type: "decimal(19,5)", precision: 19, scale: 5, nullable: true),
                     IsAddendum = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -171,6 +173,7 @@ namespace Zubeldia.Providers.Migrations
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    ExchangeRate = table.Column<decimal>(type: "decimal(19,5)", precision: 19, scale: 5, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompletionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -205,10 +208,7 @@ namespace Zubeldia.Providers.Migrations
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
                     ExchangeRate = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalRecognition = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
-                    InstallmentsCount = table.Column<int>(type: "int", nullable: true),
-                    InstallmentRecognition = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,6 +221,35 @@ namespace Zubeldia.Providers.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ContractSalaries_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContractTrajectories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ContractId = table.Column<int>(type: "int", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    ExchangeRate = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractTrajectories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContractTrajectories_Contracts_ContractId",
+                        column: x => x.ContractId,
+                        principalTable: "Contracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ContractTrajectories_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
                         principalColumn: "Id",
@@ -253,6 +282,16 @@ namespace Zubeldia.Providers.Migrations
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ContractTrajectories_ContractId",
+                table: "ContractTrajectories",
+                column: "ContractId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContractTrajectories_CurrencyId",
+                table: "ContractTrajectories",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",
                 table: "RolePermissions",
                 column: "PermissionId");
@@ -271,6 +310,9 @@ namespace Zubeldia.Providers.Migrations
 
             migrationBuilder.DropTable(
                 name: "ContractSalaries");
+
+            migrationBuilder.DropTable(
+                name: "ContractTrajectories");
 
             migrationBuilder.DropTable(
                 name: "RolePermissions");

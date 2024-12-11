@@ -33,26 +33,9 @@
 
             RuleFor(x => x.EndDate)
                 .NotEmpty()
-                .WithMessage(MessageUtils.MandatoryField("Fecha de finalización"));
-
-            When(x => x.TotalRecognition.HasValue, () =>
-            {
-                RuleFor(x => x.TotalRecognition)
-                    .GreaterThan(0)
-                    .WithMessage(MessageUtils.MustBeGreaterThanZero("Reconocimiento total"));
-
-                RuleFor(x => x.InstallmentsCount)
-                    .NotEmpty()
-                    .WithMessage(MessageUtils.MandatoryField("Cantidad de cuotas"))
-                    .GreaterThan(0)
-                    .WithMessage(MessageUtils.MustBeGreaterThanZero("Cantidad de cuotas"));
-
-                RuleFor(x => x.InstallmentRecognition)
-                    .NotEmpty()
-                    .WithMessage(MessageUtils.MandatoryField("Reconocimiento por cuota"))
-                    .GreaterThan(0)
-                    .WithMessage(MessageUtils.MustBeGreaterThanZero("Reconocimiento por cuota"));
-            });
+                .WithMessage(MessageUtils.MandatoryField("Fecha de finalización"))
+                .GreaterThan(x => x.StartDate)
+                .WithMessage(MessageUtils.DateMustBeGreaterThan("Fecha de finalización"));
         }
     }
 }
