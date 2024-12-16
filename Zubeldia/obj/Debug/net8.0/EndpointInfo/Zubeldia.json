@@ -102,50 +102,27 @@
         }
       }
     },
-    "/api/contract/types": {
-      "get": {
-        "tags": [
-          "Contract"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/KeyNameDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/KeyNameDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/KeyNameDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/contract": {
       "get": {
         "tags": [
           "Contract"
         ],
         "parameters": [
+          {
+            "name": "CurrencyId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ContractTypeEnum"
+            }
+          },
           {
             "name": "SortingProperty",
             "in": "query",
@@ -225,6 +202,9 @@
                     "type": "string",
                     "format": "binary"
                   },
+                  "FileName": {
+                    "type": "string"
+                  },
                   "StartDate": {
                     "type": "string",
                     "format": "date-time"
@@ -276,6 +256,9 @@
                   "style": "form"
                 },
                 "File": {
+                  "style": "form"
+                },
+                "FileName": {
                   "style": "form"
                 },
                 "StartDate": {
@@ -337,6 +320,151 @@
       }
     },
     "/api/contract/{id}": {
+      "put": {
+        "tags": [
+          "Contract"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "PlayerId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "FileName": {
+                    "type": "string"
+                  },
+                  "StartDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "EndDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "EarlyTerminationDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Type": {
+                    "$ref": "#/components/schemas/ContractTypeEnum"
+                  },
+                  "ReleaseClause": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "IsAddendum": {
+                    "type": "boolean"
+                  },
+                  "Objectives": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreateContractObjectiveRequest"
+                    }
+                  },
+                  "Salaries": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreateContractSalaryRequest"
+                    }
+                  },
+                  "Trajectories": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreateContractTrajectoryRequest"
+                    }
+                  },
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "PlayerId": {
+                  "style": "form"
+                },
+                "File": {
+                  "style": "form"
+                },
+                "FileName": {
+                  "style": "form"
+                },
+                "StartDate": {
+                  "style": "form"
+                },
+                "EndDate": {
+                  "style": "form"
+                },
+                "EarlyTerminationDate": {
+                  "style": "form"
+                },
+                "Type": {
+                  "style": "form"
+                },
+                "ReleaseClause": {
+                  "style": "form"
+                },
+                "IsAddendum": {
+                  "style": "form"
+                },
+                "Objectives": {
+                  "style": "form"
+                },
+                "Salaries": {
+                  "style": "form"
+                },
+                "Trajectories": {
+                  "style": "form"
+                },
+                "Id": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "Contract"
@@ -358,17 +486,94 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetContractDto"
+                  "$ref": "#/components/schemas/CreateContractRequest"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetContractDto"
+                  "$ref": "#/components/schemas/CreateContractRequest"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetContractDto"
+                  "$ref": "#/components/schemas/CreateContractRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contract/filters": {
+      "get": {
+        "tags": [
+          "Contract"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractFiltersResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractFiltersResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractFiltersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contract/types": {
+      "get": {
+        "tags": [
+          "Contract"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
                 }
               }
             }
@@ -488,6 +693,27 @@
   },
   "components": {
     "schemas": {
+      "ContractFiltersResponse": {
+        "type": "object",
+        "properties": {
+          "currencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ContractOrderPropertiesEnum": {
         "enum": [
           0,
@@ -495,7 +721,8 @@
           2,
           3,
           4,
-          5
+          5,
+          6
         ],
         "type": "integer",
         "format": "int32"
@@ -534,6 +761,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "currencyCode": {
+            "type": "string",
+            "nullable": true
+          },
           "startDate": {
             "type": "string",
             "format": "date-time"
@@ -544,6 +775,77 @@
           },
           "isRepeatable": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateContractRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "playerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "earlyTerminationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/ContractTypeEnum"
+          },
+          "releaseClause": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "isAddendum": {
+            "type": "boolean"
+          },
+          "objectives": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateContractObjectiveRequest"
+            },
+            "nullable": true
+          },
+          "salaries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateContractSalaryRequest"
+            },
+            "nullable": true
+          },
+          "trajectories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateContractTrajectoryRequest"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -563,6 +865,10 @@
           "currencyId": {
             "type": "integer",
             "format": "int32"
+          },
+          "currencyCode": {
+            "type": "string",
+            "nullable": true
           },
           "exchangeRate": {
             "type": "number",
@@ -599,6 +905,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "currencyCode": {
+            "type": "string",
+            "nullable": true
+          },
           "exchangeRate": {
             "type": "number",
             "format": "double"
@@ -624,133 +934,6 @@
         },
         "additionalProperties": false
       },
-      "GetContractDto": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "file": {
-            "type": "string",
-            "nullable": true
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "player": {
-            "$ref": "#/components/schemas/GetContractPlayerDto"
-          },
-          "objectives": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetContractObjectiveDto"
-            },
-            "nullable": true
-          },
-          "salaries": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetContractSalaryDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetContractObjectiveDto": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "amount": {
-            "type": "number",
-            "format": "double"
-          },
-          "currencyCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "season": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "isCompleted": {
-            "type": "boolean"
-          },
-          "completionDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetContractPlayerDto": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "documentNumber": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetContractSalaryDto": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "format": "double"
-          },
-          "currencyCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "exchangeRate": {
-            "type": "number",
-            "format": "double"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
       "GetContractsDto": {
         "type": "object",
         "properties": {
@@ -758,7 +941,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "title": {
+          "playerFullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
             "type": "string",
             "nullable": true
           },

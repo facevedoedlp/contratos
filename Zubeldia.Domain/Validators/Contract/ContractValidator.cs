@@ -3,11 +3,15 @@
     using FluentValidation;
     using Zubeldia.Commons;
     using Zubeldia.Domain.Dtos.Contract;
+    using Zubeldia.Domain.Interfaces.Providers;
 
     public class ContractValidator : AbstractValidator<CreateContractRequest>
     {
-        public ContractValidator()
+        private readonly IContractDao contractDao;
+        public ContractValidator(IContractDao contractDao)
         {
+            this.contractDao = contractDao;
+
             RuleFor(x => x.Type)
               .Cascade(CascadeMode.Stop)
               .IsInEnum()
@@ -42,7 +46,14 @@
                 .WithMessage(MessageUtils.MustBeGreaterThanZero("Cláusula de rescisión"));
 
             RuleFor(x => x.File)
-                .NotEmpty()
+                .Must((request, file) => {
+                    if (!request.Id.HasValue || request.Id == 0)
+                    {
+                        return file != null;
+                    }
+
+                    return true;
+                })
                 .WithMessage(MessageUtils.MandatoryField("Archivo"));
 
             RuleForEach(x => x.Objectives)

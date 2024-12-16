@@ -427,7 +427,8 @@ namespace Zubeldia.Providers.Migrations
                         .WithMany("Objectives")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Objectives_Contracts_Cascade");
 
                     b.HasOne("Zubeldia.Domain.Entities.Currency", "Currency")
                         .WithMany()
@@ -446,7 +447,8 @@ namespace Zubeldia.Providers.Migrations
                         .WithMany("Salaries")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Salaries_Contracts_Cascade");
 
                     b.HasOne("Zubeldia.Domain.Entities.Currency", "Currency")
                         .WithMany()
@@ -465,7 +467,8 @@ namespace Zubeldia.Providers.Migrations
                         .WithMany("Trajectories")
                         .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Trajectories_Contracts_Cascade");
 
                     b.HasOne("Zubeldia.Domain.Entities.Currency", "Currency")
                         .WithMany()

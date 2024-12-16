@@ -4,8 +4,8 @@
 
     public enum ContractOrderPropertiesEnum
     {
-        [Display(Name = "Titulo")]
-        Title,
+        [Display(Name = "Nombre del jugador")]
+        PlayerFullName,
         [Display(Name = "Tipo")]
         Type,
         [Display(Name = "Fecha de Inicio")]
@@ -16,5 +16,7 @@
         RemainingMonths,
         [Display(Name = "Id")]
         Id,
+        [Display(Name = "Moneda")]
+        CurrencyCode,
     }
 }

@@ -5,7 +5,7 @@
     public enum PermissionActionEnum
     {
         [Display(Name = "Ver")]
-        View = 0,
+        Read = 0,
 
         [Display(Name = "Crear")]
         Create = 1,
@@ -14,6 +14,6 @@
         Delete = 2,
 
         [Display(Name = "Editar")]
-        Edit = 3,
+        Update = 3,
     }
 }

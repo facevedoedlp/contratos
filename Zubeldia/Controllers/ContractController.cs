@@ -5,7 +5,6 @@
     using Zubeldia.Commons.Enums.Permission;
     using Zubeldia.Domain.Dtos.Commons;
     using Zubeldia.Domain.Dtos.Contract;
-    using Zubeldia.Domain.Dtos.Contract.GetContractDto;
     using Zubeldia.Domain.Entities.Base;
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Dtos.Models.Commons;
@@ -15,18 +14,31 @@
     public class ContractController(IContractService contractService)
         : ZubeldiaControllerBase
     {
+        [HttpGet]
+        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Read)]
+        public async Task<SearchResultPage<GetContractsDto>> GetAsync([FromQuery] GetContractsRequest request) => await contractService.GetByFiltersWithPaginationAsync(request);
+
+        [HttpPost]
+        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Create)]
+        public async Task<ActionResult<ValidatorResultDto>> CreateAsync([FromForm] CreateContractRequest contract) => Ok(await contractService.CreateOrEdit(contract));
+
+        [HttpPut("{id}")]
+        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Update)]
+        public async Task<ActionResult<ValidatorResultDto>> UpdateAsync(int id, [FromForm] CreateContractRequest contract) => Ok(await contractService.CreateOrEdit(contract));
+
+        [HttpGet("{id:int}")]
+        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Read)]
+        public async Task<CreateContractRequest> GetByIdAsync(int id) => await contractService.GetByIdAsync(id);
+
+        [HttpGet("filters")]
+        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Read)]
+        public async Task<ContractFiltersResponse> GetSearchFilters(int id) => await contractService.GetSearchFiltersAsync();
+
         [HttpGet("types")]
         public IEnumerable<KeyNameDto> GetTypes() => contractService.GetTypes();
 
-        [HttpGet]
-        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.View)]
-        public async Task<SearchResultPage<GetContractsDto>> GetAsync([FromQuery] GetContractsRequest request) => await contractService.GetByFiltersWithPaginationAsync(request);
-
-        [HttpGet("{id:int}")]
-        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.View)]
-        public async Task<GetContractDto> GetByIdAsync(int id) => await contractService.GetByIdAsync(id);
         [HttpGet("files/contract/{id}")]
-        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.View)]
+        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Read)]
         public async Task<IActionResult> GetContractFile(int id)
         {
             var result = await contractService.GetContractFileAsync(id);
@@ -37,9 +49,5 @@
 
             return File(fileStream, contentType);
         }
-
-        [HttpPost]
-        [Authorize(PermissionResourceTypeEnum.Contracts, PermissionActionEnum.Create)]
-        public async Task<ActionResult<ValidatorResultDto>> PostAsync([FromForm] CreateContractRequest contract) => Ok(await contractService.CreateAsync(contract));
     }
 }

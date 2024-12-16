@@ -28,17 +28,20 @@
             builder.HasMany(x => x.Objectives)
                 .WithOne(x => x.Contract)
                 .HasForeignKey(x => x.ContractId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Objectives_Contracts_Cascade");
 
             builder.HasMany(x => x.Salaries)
                 .WithOne(x => x.Contract)
                 .HasForeignKey(x => x.ContractId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Salaries_Contracts_Cascade");
 
             builder.HasMany(x => x.Trajectories)
                 .WithOne(x => x.Contract)
                 .HasForeignKey(x => x.ContractId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Trajectories_Contracts_Cascade");
         }
     }
 }
