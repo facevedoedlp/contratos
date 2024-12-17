@@ -51,34 +51,27 @@ stages:
         artifactName: 'drop'
         downloadPath: '$(System.ArtifactsDirectory)'
 
-    - task: Bash@3
-      displayName: 'Copy Files and Restart Service'
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "Starting deployment..."
+    - script: |
+        echo "Starting deployment..."
 
-          # Crear clave privada temporal
-          echo "Creando clave privada temporal..."
-          echo "$(sshKey)" > private_key.pem
-          chmod 600 private_key.pem
+        # Crear clave privada temporal
+        echo "Creando clave privada temporal..."
+        echo "$(sshKey)" > private_key.pem
+        chmod 600 private_key.pem
 
-          # Crear carpeta destino si no existe
-          echo "Creando carpeta de destino..."
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "sudo mkdir -p $(deployPath) && sudo chown ec2-user:ec2-user $(deployPath)"
+        # Copiar archivos directamente a /var/www/contratos
+        echo "Copiando archivos..."
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(System.ArtifactsDirectory)/drop/* $(sshUser)@$(serverIP):$(deployPath)
 
-          # Copiar archivo ZIP al servidor
-          echo "Copiando archivos al servidor AWS..."
-          scp -o StrictHostKeyChecking=no -i private_key.pem $(System.ArtifactsDirectory)/drop/*.zip $(sshUser)@$(serverIP):$(deployPath)
+        # Descomprimir archivos en el servidor si es necesario
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
+        echo "Descomprimiendo archivos..."
+        sudo unzip -o $(deployPath)/Zubeldia.zip -d $(deployPath)
+        sudo systemctl daemon-reload
+        sudo systemctl restart contratos.service
+        EOF
 
-          # Extraer archivos y reiniciar servicio
-          echo "Extrayendo archivos y reiniciando servicio..."
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
-          unzip -o $(deployPath)/*.zip -d $(deployPath)
-          sudo systemctl daemon-reload
-          sudo systemctl restart contratos.service
-          EOF
-
-          # Limpiar clave privada temporal
-          rm -f private_key.pem
-          echo "Despliegue completado correctamente."
+        # Limpiar clave temporal
+        rm -f private_key.pem
+        echo "Despliegue completado correctamente."
+      displayName: 'Deploy and Restart Service'
