@@ -2,57 +2,83 @@ trigger:
 - main
 
 pool:
-  name: Default
+  name: Default          # Pool donde está el agente autohospedado
   demands:
-    - Agent.Name -equals ip-172-31-8-73
+    - Agent.Name -equals ip-172-31-8-73  # Nombre del agente
 
 variables:
-  deployPath: '/var/www/contratos'
-  serverIP: '172.31.8.73'
-  sshUser: 'ec2-user'
-  sshKey: '$(SSH_PRIVATE_KEY)'
+  buildConfiguration: 'Release'
+  deployPath: '/var/www/contratos'        # Ruta en el servidor AWS
+  serverIP: '172.31.8.73'                 # IP del servidor
+  sshUser: 'ec2-user'                     # Usuario SSH
+  sshKey: '$(SSH_PRIVATE_KEY)'            # Clave SSH desde variables secretas
 
 stages:
-- stage: Deploy
-  displayName: 'Deploy to AWS Linux Server'
+- stage: Build
+  displayName: 'Build .NET Core API'
   jobs:
-  - job: Deploy
-    displayName: 'Copy File and Restart Service'
+  - job: Build
+    displayName: 'Compile and Publish'
     steps:
     - checkout: self
       displayName: 'Checkout Code'
 
-    - script: |
-        echo "Listando archivos del agente:"
-        ls -la /home/ec2-user/myagent/_work
-      displayName: 'Listar Archivos del Agente'
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish .NET Core Project'
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Upload Build Artifacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+
+- stage: Deploy
+  displayName: 'Deploy to AWS Linux Server'
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    displayName: 'Copy Files and Restart Service'
+    steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Build Artifacts'
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
 
     - task: Bash@3
-      displayName: 'Copy and Restart Service'
+      displayName: 'Copy Files and Restart Service'
       inputs:
         targetType: 'inline'
         script: |
-          echo "Iniciando despliegue..."
+          echo "Starting deployment..."
 
           # Crear clave privada temporal
+          echo "Creando clave privada temporal..."
           echo "$(sshKey)" > private_key.pem
           chmod 600 private_key.pem
 
-          # Crear carpeta destino
+          # Crear carpeta destino si no existe
+          echo "Creando carpeta de destino..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "sudo mkdir -p $(deployPath) && sudo chown ec2-user:ec2-user $(deployPath)"
 
-          # Copiar archivo al servidor
-          scp -o StrictHostKeyChecking=no -i private_key.pem /home/ec2-user/myagent/_work/1/a/drop/Zubeldia.zip $(sshUser)@$(serverIP):$(deployPath)/Zubeldia.zip
+          # Copiar archivo ZIP al servidor
+          echo "Copiando archivos al servidor AWS..."
+          scp -o StrictHostKeyChecking=no -i private_key.pem $(System.ArtifactsDirectory)/drop/*.zip $(sshUser)@$(serverIP):$(deployPath)
 
-          # Verificar archivos copiados
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "ls -la $(deployPath)"
-
-          # Descomprimir archivo y reiniciar servicio
+          # Extraer archivos y reiniciar servicio
+          echo "Extrayendo archivos y reiniciando servicio..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
-          unzip -o $(deployPath)/Zubeldia.zip -d $(deployPath)
+          unzip -o $(deployPath)/*.zip -d $(deployPath)
           sudo systemctl daemon-reload
           sudo systemctl restart contratos.service
           EOF
 
+          # Limpiar clave privada temporal
           rm -f private_key.pem
           echo "Despliegue completado correctamente."
