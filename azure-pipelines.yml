@@ -2,14 +2,16 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Default  # Usa el pool de agentes autohospedados
+  demands:
+    - Agent.Name -equals AWS-Linux-Agent  # Nombre de tu agente autohospedado
 
 variables:
   buildConfiguration: 'Release'
-  deployPath: '/var/www/contratos'
-  serverIP: '172.31.8.73'
-  sshUser: 'ec2-user'
-  sshKey: '$(SSH_PRIVATE_KEY)'
+  deployPath: '/var/www/contratos'        # Ruta de destino en el servidor
+  serverIP: '172.31.8.73'                 # IP del servidor Linux en AWS
+  sshUser: 'ec2-user'                     # Usuario del servidor Amazon Linux
+  sshKey: '$(SSH_PRIVATE_KEY)'            # Clave SSH secreta
 
 stages:
 - stage: Build
@@ -18,7 +20,7 @@ stages:
   - job: Build
     displayName: 'Compile and Publish'
     steps:
-    - checkout: self   # Forzar el checkout del repositorio
+    - checkout: self   # Realizar checkout del repositorio
 
     - task: DotNetCoreCLI@2
       displayName: 'Publish .NET Core Project'
@@ -41,8 +43,6 @@ stages:
   - job: Deploy
     displayName: 'Copy and Deploy to AWS'
     steps:
-    - checkout: none   # No es necesario hacer checkout aquí
-
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Build Artifacts'
       inputs:
@@ -58,19 +58,31 @@ stages:
         script: |
           echo "Starting deployment..."
 
+          # Validar si los archivos existen
+          if [ ! -d "$(System.ArtifactsDirectory)/drop" ]; then
+            echo "Error: No se encontraron los archivos a desplegar."
+            exit 1
+          fi
+
           # Crear la clave privada temporal
+          echo "Creando clave privada temporal..."
           echo "$(sshKey)" > private_key.pem
           chmod 600 private_key.pem
 
+          # Crear carpeta de destino en el servidor si no existe
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "mkdir -p $(deployPath)"
+
           # Copiar archivos al servidor
+          echo "Copiando archivos al servidor..."
           scp -o StrictHostKeyChecking=no -i private_key.pem -r $(System.ArtifactsDirectory)/drop/* $(sshUser)@$(serverIP):$(deployPath)
 
-          # Reiniciar el servicio
+          # Reiniciar el servicio en el servidor
+          echo "Reiniciando servicio en el servidor..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
           sudo systemctl daemon-reload
           sudo systemctl restart contratos.service
           EOF
 
-          # Limpiar clave temporal
+          # Eliminar la clave privada temporal
           rm -f private_key.pem
           echo "Despliegue completado correctamente."
