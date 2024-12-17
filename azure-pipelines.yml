@@ -2,16 +2,16 @@ trigger:
 - main
 
 pool:
-  name: Default  # Usa el pool de agentes autohospedados
+  name: Default          # Pool donde está el agente autohospedado
   demands:
-    - Agent.Name -equals AWS-Linux-Agent  # Nombre de tu agente autohospedado
+    - Agent.Name -equals ip-172-31-8-73  # Nombre del agente
 
 variables:
   buildConfiguration: 'Release'
-  deployPath: '/var/www/contratos'        # Ruta de destino en el servidor
-  serverIP: '172.31.8.73'                 # IP del servidor Linux en AWS
-  sshUser: 'ec2-user'                     # Usuario del servidor Amazon Linux
-  sshKey: '$(SSH_PRIVATE_KEY)'            # Clave SSH secreta
+  deployPath: '/var/www/contratos'        # Ruta en el servidor AWS
+  serverIP: '172.31.8.73'                 # IP del servidor
+  sshUser: 'ec2-user'                     # Usuario SSH
+  sshKey: '$(SSH_PRIVATE_KEY)'            # Clave SSH desde variables secretas
 
 stages:
 - stage: Build
@@ -20,7 +20,8 @@ stages:
   - job: Build
     displayName: 'Compile and Publish'
     steps:
-    - checkout: self   # Realizar checkout del repositorio
+    - checkout: self
+      displayName: 'Checkout Code'
 
     - task: DotNetCoreCLI@2
       displayName: 'Publish .NET Core Project'
@@ -34,14 +35,13 @@ stages:
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
-        publishLocation: 'Container'
 
 - stage: Deploy
   displayName: 'Deploy to AWS Linux Server'
   dependsOn: Build
   jobs:
   - job: Deploy
-    displayName: 'Copy and Deploy to AWS'
+    displayName: 'Copy Files and Restart Service'
     steps:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Build Artifacts'
@@ -51,38 +51,30 @@ stages:
         artifactName: 'drop'
         downloadPath: '$(System.ArtifactsDirectory)'
 
-    - task: Bash@3
-      displayName: 'Copy Files and Restart Service'
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "Starting deployment..."
+    - script: |
+        echo "Starting deployment..."
 
-          # Validar si los archivos existen
-          if [ ! -d "$(System.ArtifactsDirectory)/drop" ]; then
-            echo "Error: No se encontraron los archivos a desplegar."
-            exit 1
-          fi
+        # Crear clave privada temporal
+        echo "Creando clave privada temporal..."
+        echo "$(sshKey)" > private_key.pem
+        chmod 600 private_key.pem
 
-          # Crear la clave privada temporal
-          echo "Creando clave privada temporal..."
-          echo "$(sshKey)" > private_key.pem
-          chmod 600 private_key.pem
+        # Crear carpeta destino si no existe
+        echo "Creando carpeta de destino..."
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "mkdir -p $(deployPath)"
 
-          # Crear carpeta de destino en el servidor si no existe
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "mkdir -p $(deployPath)"
+        # Copiar archivos al servidor
+        echo "Copiando archivos..."
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(System.ArtifactsDirectory)/drop/* $(sshUser)@$(serverIP):$(deployPath)
 
-          # Copiar archivos al servidor
-          echo "Copiando archivos al servidor..."
-          scp -o StrictHostKeyChecking=no -i private_key.pem -r $(System.ArtifactsDirectory)/drop/* $(sshUser)@$(serverIP):$(deployPath)
+        # Reiniciar servicio
+        echo "Reiniciando servicio..."
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
+        sudo systemctl daemon-reload
+        sudo systemctl restart contratos.service
+        EOF
 
-          # Reiniciar el servicio en el servidor
-          echo "Reiniciando servicio en el servidor..."
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
-          sudo systemctl daemon-reload
-          sudo systemctl restart contratos.service
-          EOF
-
-          # Eliminar la clave privada temporal
-          rm -f private_key.pem
-          echo "Despliegue completado correctamente."
+        # Limpiar clave temporal
+        rm -f private_key.pem
+        echo "Despliegue completado correctamente."
+      displayName: 'Deploy and Restart Service'
