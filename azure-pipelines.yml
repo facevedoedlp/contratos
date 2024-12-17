@@ -7,52 +7,20 @@ pool:
     - Agent.Name -equals ip-172-31-8-73  # Nombre del agente
 
 variables:
-  buildConfiguration: 'Release'
   deployPath: '/var/www/contratos'        # Ruta en el servidor AWS
   serverIP: '172.31.8.73'                 # IP del servidor
   sshUser: 'ec2-user'                     # Usuario SSH
   sshKey: '$(SSH_PRIVATE_KEY)'            # Clave SSH desde variables secretas
 
 stages:
-- stage: Build
-  displayName: 'Build .NET Core API'
-  jobs:
-  - job: Build
-    displayName: 'Compile and Publish'
-    steps:
-    - checkout: self
-      displayName: 'Checkout Code'
-
-    - task: DotNetCoreCLI@2
-      displayName: 'Publish .NET Core Project'
-      inputs:
-        command: 'publish'
-        publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Upload Build Artifacts'
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-
 - stage: Deploy
   displayName: 'Deploy to AWS Linux Server'
-  dependsOn: Build
   jobs:
   - job: Deploy
-    displayName: 'Copy Files and Restart Service'
+    displayName: 'Copy File Directly and Restart Service'
     steps:
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Build Artifacts'
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'drop'
-        downloadPath: '$(System.ArtifactsDirectory)'
-
     - task: Bash@3
-      displayName: 'Copy Files and Restart Service'
+      displayName: 'Copy File Directly to Server'
       inputs:
         targetType: 'inline'
         script: |
@@ -63,21 +31,19 @@ stages:
           echo "$(sshKey)" > private_key.pem
           chmod 600 private_key.pem
 
-          # Crear carpeta destino
-          echo "Creando carpeta de destino en el servidor..."
+          # Crear carpeta destino en el servidor
+          echo "Creando carpeta destino en el servidor..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "sudo mkdir -p $(deployPath) && sudo chown ec2-user:ec2-user $(deployPath)"
 
-          # Copiar archivo ZIP desde la ruta absoluta
-          echo "Copiando archivo Zubeldia.zip al servidor AWS..."
-          scp -o StrictHostKeyChecking=no -i private_key.pem /home/ec2-user/myagent/_work/1/a/drop/Zubeldia.zip $(sshUser)@$(serverIP):$(deployPath)
+          # Copiar archivo ZIP al servidor AWS
+          echo "Copiando Zubeldia.zip al servidor AWS..."
+          scp -o StrictHostKeyChecking=no -i private_key.pem /home/ec2-user/myagent/_work/1/a/drop/Zubeldia.zip $(sshUser)@$(serverIP):$(deployPath)/Zubeldia.zip
 
           # Verificar archivos en el servidor
-          echo "Verificando archivos en el servidor..."
-          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
-          ls -la $(deployPath)
-          EOF
+          echo "Verificando archivos copiados en el servidor..."
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "ls -la $(deployPath)"
 
-          # Descomprimir archivo ZIP y reiniciar servicio
+          # Descomprimir el archivo y reiniciar el servicio
           echo "Descomprimiendo archivo y reiniciando servicio..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
           unzip -o $(deployPath)/Zubeldia.zip -d $(deployPath)
@@ -86,5 +52,7 @@ stages:
           EOF
 
           # Eliminar clave privada temporal
+          echo "Limpiando clave privada temporal..."
           rm -f private_key.pem
-          echo "Despliegue completado correctamente."
+
+          echo "Despliegue completado exitosamente."
