@@ -1,59 +1,54 @@
 trigger:
-  - master  # Ejecutar el pipeline solo en la rama master
+  - master
 
 pool:
-  name: Ubuntu-AWS  # Nombre del pool de agentes self-hosted en Azure DevOps
+  name: Ubuntu-AWS  # Tu agente self-hosted en Azure DevOps
 
 variables:
-  app_name: "ZUBELDIA"              # Nombre de la API
-  app_dir: "/var/www/zubeldia"      # Ruta en el servidor donde se desplegará
-  dotnet_version: "8.0.x"           # Versión de .NET Core SDK
+  app_dir: "/var/www/zubeldia"
+  dotnet_version: "8.0.x"
 
 stages:
   - stage: Build
     displayName: "Build .NET Core API"
     jobs:
       - job: Build
-        displayName: "Compile and Publish API"
         steps:
           - task: UseDotNet@2
             inputs:
               version: $(dotnet_version)
-              includePreviewVersions: true
 
           - script: |
               echo "Restaurando dependencias..."
               dotnet restore
-              echo "Compilando el proyecto..."
-              dotnet build --configuration Release --no-restore
+              echo "Compilando la API..."
+              dotnet build --configuration Release
             displayName: "Restore and Build"
 
           - script: |
-              echo "Publicando el proyecto..."
+              echo "Publicando la API..."
               dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
-            displayName: "Publish Project"
+            displayName: "Publish"
 
           - task: PublishBuildArtifacts@1
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
-            displayName: "Publish Build Artifacts"
 
   - stage: Deploy
     displayName: "Deploy to Ubuntu AWS"
     dependsOn: Build
     jobs:
       - job: Deploy
-        displayName: "Deploy API to AWS Server"
         steps:
           - script: |
-              echo "Desplegando la API en el servidor AWS..."
+              echo "Copiando archivos al servidor..."
               scp -o StrictHostKeyChecking=no -r $(Build.ArtifactStagingDirectory)/* ubuntu@18.190.176.168:$(app_dir)
             displayName: "Copy Files to Server"
 
           - script: |
-              echo "Reiniciando la API con systemd..."
+              echo "Reiniciando el servicio en el servidor..."
               ssh -o StrictHostKeyChecking=no ubuntu@18.190.176.168 << 'EOF'
-              sudo systemctl restart kestrel-$(app_name).service
+              sudo systemctl restart kestrel-contratos.service
               EOF
-            displayName: "Restart API Service"
+            displayName: "Restart Service"
