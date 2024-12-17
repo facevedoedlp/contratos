@@ -56,29 +56,35 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          echo "Starting deployment..."
+          echo "Iniciando despliegue..."
 
           # Crear clave privada temporal
           echo "Creando clave privada temporal..."
           echo "$(sshKey)" > private_key.pem
           chmod 600 private_key.pem
 
-          # Crear carpeta destino si no existe
-          echo "Creando carpeta de destino..."
+          # Crear carpeta destino
+          echo "Creando carpeta de destino en el servidor..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "sudo mkdir -p $(deployPath) && sudo chown ec2-user:ec2-user $(deployPath)"
 
-          # Copiar archivo ZIP al servidor
-          echo "Copiando archivos al servidor AWS..."
-          scp -o StrictHostKeyChecking=no -i private_key.pem $(System.ArtifactsDirectory)/drop/*.zip $(sshUser)@$(serverIP):$(deployPath)
+          # Copiar archivo ZIP desde la ruta absoluta
+          echo "Copiando archivo Zubeldia.zip al servidor AWS..."
+          scp -o StrictHostKeyChecking=no -i private_key.pem /home/ec2-user/myagent/_work/1/a/drop/Zubeldia.zip $(sshUser)@$(serverIP):$(deployPath)
 
-          # Extraer archivos y reiniciar servicio
-          echo "Extrayendo archivos y reiniciando servicio..."
+          # Verificar archivos en el servidor
+          echo "Verificando archivos en el servidor..."
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
-          unzip -o $(deployPath)/*.zip -d $(deployPath)
+          ls -la $(deployPath)
+          EOF
+
+          # Descomprimir archivo ZIP y reiniciar servicio
+          echo "Descomprimiendo archivo y reiniciando servicio..."
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
+          unzip -o $(deployPath)/Zubeldia.zip -d $(deployPath)
           sudo systemctl daemon-reload
           sudo systemctl restart contratos.service
           EOF
 
-          # Limpiar clave privada temporal
+          # Eliminar clave privada temporal
           rm -f private_key.pem
           echo "Despliegue completado correctamente."
