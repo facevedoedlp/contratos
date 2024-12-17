@@ -1,0 +1,71 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  deployPath: '/var/www/contratos'        # Ruta en tu servidor AWS
+  serverIP: '172.31.8.73'          # IP de tu servidor AWS
+  sshUser: 'ec2-user'                 # Usuario de Amazon Linux
+  sshKey: '$(SSH_PRIVATE_KEY)'        # Variable secreta con la clave privada
+
+stages:
+- stage: Build
+  displayName: 'Build .NET Core API'
+  jobs:
+  - job: Build
+    displayName: 'Compile and Publish'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish .NET Core Project'
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: false
+
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: 'drop'
+
+- stage: Deploy
+  displayName: 'Deploy to AWS Linux Server'
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    displayName: 'Deploy to Server'
+    steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Build Artifacts'
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
+
+    - task: Bash@3
+      displayName: 'Copy Files to Server and Restart Service'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Starting deployment..."
+
+          # Crear la clave privada temporal
+          echo "Creando clave privada temporal..."
+          echo "$(sshKey)" > private_key.pem
+          chmod 600 private_key.pem
+
+          # Copiar archivos al servidor con SCP
+          echo "Copiando archivos al servidor..."
+          scp -o StrictHostKeyChecking=no -i private_key.pem -r $(System.ArtifactsDirectory)/drop/* $(sshUser)@$(serverIP):$(deployPath)
+
+          # Reiniciar el servicio en el servidor
+          echo "Reiniciando servicio en el servidor..."
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
+          sudo systemctl restart myapi.service
+          EOF
+
+          # Limpiar clave privada temporal
+          rm -f private_key.pem
+          echo "Despliegue completado correctamente."
