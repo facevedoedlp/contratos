@@ -1,77 +1,59 @@
 trigger:
-- main
+  - master  # Ejecutar el pipeline solo en la rama master
 
 pool:
-  name: Default          # Pool donde está el agente autohospedado
-  demands:
-    - Agent.Name -equals ip-172-31-8-73  # Nombre del agente
+  name: Ubuntu-AWS  # Nombre del pool de agentes self-hosted en Azure DevOps
 
 variables:
-  buildConfiguration: 'Release'
-  deployPath: '/var/www/contratos'        # Ruta en el servidor AWS
-  serverIP: '172.31.8.73'                 # IP del servidor
-  sshUser: 'ec2-user'                     # Usuario SSH
-  sshKey: '$(SSH_PRIVATE_KEY)'            # Clave SSH desde variables secretas
+  app_name: "ZUBELDIA"              # Nombre de la API
+  app_dir: "/var/www/zubeldia"      # Ruta en el servidor donde se desplegará
+  dotnet_version: "8.0.x"           # Versión de .NET Core SDK
 
 stages:
-- stage: Build
-  displayName: 'Build .NET Core API'
-  jobs:
-  - job: Build
-    displayName: 'Compile and Publish'
-    steps:
-    - checkout: self
-      displayName: 'Checkout Code'
+  - stage: Build
+    displayName: "Build .NET Core API"
+    jobs:
+      - job: Build
+        displayName: "Compile and Publish API"
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnet_version)
+              includePreviewVersions: true
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Publish .NET Core Project'
-      inputs:
-        command: 'publish'
-        publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+          - script: |
+              echo "Restaurando dependencias..."
+              dotnet restore
+              echo "Compilando el proyecto..."
+              dotnet build --configuration Release --no-restore
+            displayName: "Restore and Build"
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Upload Build Artifacts'
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
+          - script: |
+              echo "Publicando el proyecto..."
+              dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+            displayName: "Publish Project"
 
-- stage: Deploy
-  displayName: 'Deploy to AWS Linux Server'
-  dependsOn: Build
-  jobs:
-  - job: Deploy
-    displayName: 'Copy Files and Restart Service'
-    steps:
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Build Artifacts'
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'drop'
-        downloadPath: '$(System.ArtifactsDirectory)'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+            displayName: "Publish Build Artifacts"
 
-    - script: |
-        echo "Starting deployment..."
+  - stage: Deploy
+    displayName: "Deploy to Ubuntu AWS"
+    dependsOn: Build
+    jobs:
+      - job: Deploy
+        displayName: "Deploy API to AWS Server"
+        steps:
+          - script: |
+              echo "Desplegando la API en el servidor AWS..."
+              scp -o StrictHostKeyChecking=no -r $(Build.ArtifactStagingDirectory)/* ubuntu@18.190.176.168:$(app_dir)
+            displayName: "Copy Files to Server"
 
-        # Crear clave privada temporal
-        echo "Creando clave privada temporal..."
-        echo "$(sshKey)" > private_key.pem
-        chmod 600 private_key.pem
-
-        # Copiar archivos directamente a /var/www/contratos
-        echo "Copiando archivos..."
-        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(System.ArtifactsDirectory)/drop/* $(sshUser)@$(serverIP):$(deployPath)
-
-        # Descomprimir archivos en el servidor si es necesario
-        ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
-        echo "Descomprimiendo archivos..."
-        sudo unzip -o $(deployPath)/Zubeldia.zip -d $(deployPath)
-        sudo systemctl daemon-reload
-        sudo systemctl restart contratos.service
-        EOF
-
-        # Limpiar clave temporal
-        rm -f private_key.pem
-        echo "Despliegue completado correctamente."
-      displayName: 'Deploy and Restart Service'
+          - script: |
+              echo "Reiniciando la API con systemd..."
+              ssh -o StrictHostKeyChecking=no ubuntu@18.190.176.168 << 'EOF'
+              sudo systemctl restart kestrel-$(app_name).service
+              EOF
+            displayName: "Restart API Service"
