@@ -2,57 +2,57 @@ trigger:
 - main
 
 pool:
-  name: Default          # Pool donde está el agente autohospedado
+  name: Default
   demands:
-    - Agent.Name -equals ip-172-31-8-73  # Nombre del agente
+    - Agent.Name -equals ip-172-31-8-73
 
 variables:
-  deployPath: '/var/www/contratos'        # Ruta en el servidor AWS
-  serverIP: '172.31.8.73'                 # IP del servidor
-  sshUser: 'ec2-user'                     # Usuario SSH
-  sshKey: '$(SSH_PRIVATE_KEY)'            # Clave SSH desde variables secretas
+  deployPath: '/var/www/contratos'
+  serverIP: '172.31.8.73'
+  sshUser: 'ec2-user'
+  sshKey: '$(SSH_PRIVATE_KEY)'
 
 stages:
 - stage: Deploy
   displayName: 'Deploy to AWS Linux Server'
   jobs:
   - job: Deploy
-    displayName: 'Copy File Directly and Restart Service'
+    displayName: 'Copy File and Restart Service'
     steps:
+    - checkout: self
+      displayName: 'Checkout Code'
+
+    - script: |
+        echo "Listando archivos del agente:"
+        ls -la /home/ec2-user/myagent/_work
+      displayName: 'Listar Archivos del Agente'
+
     - task: Bash@3
-      displayName: 'Copy File Directly to Server'
+      displayName: 'Copy and Restart Service'
       inputs:
         targetType: 'inline'
         script: |
           echo "Iniciando despliegue..."
 
           # Crear clave privada temporal
-          echo "Creando clave privada temporal..."
           echo "$(sshKey)" > private_key.pem
           chmod 600 private_key.pem
 
-          # Crear carpeta destino en el servidor
-          echo "Creando carpeta destino en el servidor..."
+          # Crear carpeta destino
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "sudo mkdir -p $(deployPath) && sudo chown ec2-user:ec2-user $(deployPath)"
 
-          # Copiar archivo ZIP al servidor AWS
-          echo "Copiando Zubeldia.zip al servidor AWS..."
+          # Copiar archivo al servidor
           scp -o StrictHostKeyChecking=no -i private_key.pem /home/ec2-user/myagent/_work/1/a/drop/Zubeldia.zip $(sshUser)@$(serverIP):$(deployPath)/Zubeldia.zip
 
-          # Verificar archivos en el servidor
-          echo "Verificando archivos copiados en el servidor..."
+          # Verificar archivos copiados
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) "ls -la $(deployPath)"
 
-          # Descomprimir el archivo y reiniciar el servicio
-          echo "Descomprimiendo archivo y reiniciando servicio..."
+          # Descomprimir archivo y reiniciar servicio
           ssh -o StrictHostKeyChecking=no -i private_key.pem $(sshUser)@$(serverIP) << 'EOF'
           unzip -o $(deployPath)/Zubeldia.zip -d $(deployPath)
           sudo systemctl daemon-reload
           sudo systemctl restart contratos.service
           EOF
 
-          # Eliminar clave privada temporal
-          echo "Limpiando clave privada temporal..."
           rm -f private_key.pem
-
-          echo "Despliegue completado exitosamente."
+          echo "Despliegue completado correctamente."
