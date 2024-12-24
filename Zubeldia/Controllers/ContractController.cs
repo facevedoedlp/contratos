@@ -10,7 +10,7 @@
     using Zubeldia.Dtos.Models.Commons;
 
     [ApiController]
-    [Route("api/contract")]
+    [Route("api/contracts")]
     public class ContractController(IContractService contractService)
         : ZubeldiaControllerBase
     {

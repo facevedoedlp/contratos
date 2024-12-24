@@ -5,7 +5,7 @@
     using Zubeldia.Domain.Interfaces.Services;
 
     [ApiController]
-    [Route("api/player")]
+    [Route("api/players")]
     public class PlayerController(IPlayerService playerService)
         : ZubeldiaControllerBase
     {

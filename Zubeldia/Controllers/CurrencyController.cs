@@ -5,7 +5,7 @@
     using Zubeldia.Domain.Interfaces.Services;
 
     [ApiController]
-    [Route("api/currency")]
+    [Route("api/currencies")]
     public class CurrencyController(ICurrencyService currencyService)
         : ZubeldiaControllerBase
     {

@@ -8,9 +8,6 @@
     public class CurrencyDao(ZubeldiaDbContext dbContext, ISessionAccessor sessionAccessor)
         : Repository<Currency>(dbContext, sessionAccessor), ICurrencyDao
     {
-        public async Task<IEnumerable<Currency>> GetDropdownAsync()
-        {
-            return await dbContext.Currencies.OrderBy(x => x.Code).ToListAsync();
-        }
+        public async Task<IEnumerable<Currency>> GetDropdownAsync() => await dbContext.Currencies.OrderBy(x => x.Code).ToListAsync();
     }
 }

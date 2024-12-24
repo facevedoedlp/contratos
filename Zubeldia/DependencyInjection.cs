@@ -5,7 +5,9 @@
     using FluentValidation;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.OpenApi.Models;
+    using Zubeldia.Controllers;
     using Zubeldia.Domain.Dtos.Contract;
+    using Zubeldia.Domain.Entities;
     using Zubeldia.Domain.Interfaces.Providers;
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Domain.Mappers.Profiles;
@@ -14,11 +16,18 @@
     using Zubeldia.Dtos.Validatiors.User;
     using Zubeldia.Providers;
     using Zubeldia.Providers.Repositories;
+    using Zubeldia.Providers.Repositories.Category;
+    using Zubeldia.Providers.Repositories.Discipline;
+    using Zubeldia.Providers.Repositories.Position;
     using Zubeldia.Providers.Repositories.User;
     using Zubeldia.Services;
+    using Zubeldia.Services.Category;
+    using Zubeldia.Services.City;
+    using Zubeldia.Services.Currency;
     using Zubeldia.Services.Files;
     using Zubeldia.Services.Player;
     using Zubeldia.Services.Session;
+    using Zubeldia.Services.State;
 
     [ExcludeFromCodeCoverage]
     public static class DependencyInjection
@@ -63,6 +72,13 @@
             services.AddScoped<IContractDao, ContractDao>();
             services.AddScoped<IPlayerDao, PlayerDao>();
             services.AddScoped<ICurrencyDao, CurrencyDao>();
+            services.AddScoped<ICountryDao, CountryDao>();
+            services.AddScoped<ICityDao, CityDao>();
+            services.AddScoped<IStateDao, StateDao>();
+            services.AddScoped<ICategoryDao, CategoryDao>();
+            services.AddScoped<IDisciplineDao, DisciplineDao>();
+            services.AddScoped<IPositionDao, PositionDao>();
+            services.AddScoped<IHealthcarePlanDao, HealthcarePlanDao>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -73,6 +89,10 @@
             services.AddScoped<IContractService, ContractService>();
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddScoped<IStateService, StateService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IPositionService, PositionService>();
             services.AddScoped<IPdfContractProcessor, PdfContractProcessor>();
             services.AddScoped<IFileStorageService, FileStorageService>();
         }

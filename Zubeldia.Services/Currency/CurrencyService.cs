@@ -1,4 +1,4 @@
-﻿namespace Zubeldia.Services.Player
+﻿namespace Zubeldia.Services.Currency
 {
     using AutoMapper;
     using Zubeldia.Domain.Dtos.Commons;
