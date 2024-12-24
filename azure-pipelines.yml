@@ -1,0 +1,54 @@
+trigger:
+  - master
+
+pool:
+  name: Ubuntu-AWS  # Tu agente self-hosted en Azure DevOps
+
+variables:
+  app_dir: "/var/www/zubeldia"
+  dotnet_version: "8.0.x"
+
+stages:
+  - stage: Build
+    displayName: "Build .NET Core API"
+    jobs:
+      - job: Build
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnet_version)
+
+          - script: |
+              echo "Restaurando dependencias..."
+              dotnet restore
+              echo "Compilando la API..."
+              dotnet build --configuration Release
+            displayName: "Restore and Build"
+
+          - script: |
+              echo "Publicando la API..."
+              dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+            displayName: "Publish"
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+
+  - stage: Deploy
+    displayName: "Deploy to Ubuntu AWS"
+    dependsOn: Build
+    jobs:
+      - job: Deploy
+        steps:
+          - script: |
+              echo "Copiando archivos al servidor..."
+              scp -o StrictHostKeyChecking=no -r $(Build.ArtifactStagingDirectory)/* ubuntu@18.190.176.168:$(app_dir)
+            displayName: "Copy Files to Server"
+
+          - script: |
+              echo "Reiniciando el servicio en el servidor..."
+              ssh -o StrictHostKeyChecking=no ubuntu@18.190.176.168 << 'EOF'
+              sudo systemctl restart kestrel-contratos.service
+              EOF
+            displayName: "Restart Service"
