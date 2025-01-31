@@ -13,17 +13,10 @@
 
             builder.Property(x => x.Id).HasColumnOrder(0);
             builder.Property(x => x.PlayerId).IsRequired().HasColumnOrder(1);
-            builder.Property(x => x.FirstName)
-                .IsRequired()
-                .HasMaxLength(50)
-                .HasColumnOrder(2);
-            builder.Property(x => x.LastName)
-                .IsRequired()
-                .HasMaxLength(50)
-                .HasColumnOrder(3);
-            builder.Property(x => x.Relationship)
-                .IsRequired()
-                .HasColumnOrder(4);
+            builder.Property(x => x.FirstName).IsRequired().HasMaxLength(50).HasColumnOrder(2);
+            builder.Property(x => x.LastName).IsRequired().HasMaxLength(50).HasColumnOrder(3);
+            builder.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(50).HasColumnOrder(4);
+            builder.Property(x => x.Relationship).IsRequired().HasColumnOrder(5);
 
             builder.HasOne(x => x.Player)
                 .WithMany(x => x.Relatives)

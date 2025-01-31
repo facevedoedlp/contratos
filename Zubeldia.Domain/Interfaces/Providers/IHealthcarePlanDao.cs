@@ -6,6 +6,6 @@
 
     public interface IHealthcarePlanDao : IRepository<HealthcarePlan>
     {
-        Task<IEnumerable<HealthcarePlan>> GetDropdownAsync();
+        Task<IEnumerable<HealthcarePlan>> GetAllOrderedAsync();
     }
 }

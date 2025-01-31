@@ -10,6 +10,6 @@
     public class CountryDao(ZubeldiaDbContext dbContext, ISessionAccessor sessionAccessor)
         : Repository<Country>(dbContext, sessionAccessor), ICountryDao
     {
-        public async Task<IEnumerable<Country>> GetDropdownAsync() => await dbContext.Countries.OrderBy(x => x.Name).ToListAsync();
+        public async Task<IEnumerable<Country>> GetAllOrderedAsync() => await dbContext.Countries.OrderBy(x => x.Name).ToListAsync();
     }
 }

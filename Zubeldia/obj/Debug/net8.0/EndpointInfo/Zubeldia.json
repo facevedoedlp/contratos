@@ -102,7 +102,105 @@
         }
       }
     },
-    "/api/contract": {
+    "/api/categories/{disciplineId}/dropdown": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "parameters": [
+          {
+            "name": "disciplineId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cities/{stateId}/dropdown": {
+      "get": {
+        "tags": [
+          "City"
+        ],
+        "parameters": [
+          {
+            "name": "stateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contracts": {
       "get": {
         "tags": [
           "Contract"
@@ -319,7 +417,7 @@
         }
       }
     },
-    "/api/contract/{id}": {
+    "/api/contracts/{id}": {
       "put": {
         "tags": [
           "Contract"
@@ -504,7 +602,7 @@
         }
       }
     },
-    "/api/contract/filters": {
+    "/api/contracts/filters": {
       "get": {
         "tags": [
           "Contract"
@@ -543,7 +641,7 @@
         }
       }
     },
-    "/api/contract/types": {
+    "/api/contracts/types": {
       "get": {
         "tags": [
           "Contract"
@@ -581,7 +679,7 @@
         }
       }
     },
-    "/api/contract/files/contract/{id}": {
+    "/api/contracts/files/contract/{id}": {
       "get": {
         "tags": [
           "Contract"
@@ -604,7 +702,7 @@
         }
       }
     },
-    "/api/currency/dropdown": {
+    "/api/currencies/dropdown": {
       "get": {
         "tags": [
           "Currency"
@@ -642,7 +740,729 @@
         }
       }
     },
-    "/api/player/dropdown/{filter}": {
+    "/api/players": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "parameters": [
+          {
+            "name": "SortingProperty",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PlayerOrderPropertiesEnum"
+            }
+          },
+          {
+            "name": "SearchText",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sorting",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortEnum"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "TotalRecordPage",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlayersResponseSearchResultPage"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlayersResponseSearchResultPage"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlayersResponseSearchResultPage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "FirstName": {
+                    "type": "string"
+                  },
+                  "LastName": {
+                    "type": "string"
+                  },
+                  "BirthDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Photo": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "PhotoUrl": {
+                    "type": "string"
+                  },
+                  "Email": {
+                    "type": "string"
+                  },
+                  "IsActive": {
+                    "type": "boolean"
+                  },
+                  "StartDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "DominanceFoot": {
+                    "$ref": "#/components/schemas/DominanceEnum"
+                  },
+                  "DominanceEye": {
+                    "$ref": "#/components/schemas/DominanceEnum"
+                  },
+                  "Gender": {
+                    "$ref": "#/components/schemas/GenderEnum"
+                  },
+                  "CountryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "StateId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CityId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "HealthcarePlanId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "DisciplineId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CategoryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "AgentId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "PlayerAddressId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "PlayerHealthcarePlanId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Positions": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  },
+                  "HealthcarePlan.HealthcarePlanId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "HealthcarePlan.AffiliateNumber": {
+                    "type": "string"
+                  },
+                  "HealthcarePlan.FrontPhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "HealthcarePlan.BackPhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "HealthcarePlan.Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.CountryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.ProvinceId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.CityId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.Street": {
+                    "type": "string"
+                  },
+                  "Address.Number": {
+                    "type": "string"
+                  },
+                  "Address.PostalCode": {
+                    "type": "string"
+                  },
+                  "Address.Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Relatives": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreatePlayerRelativeRequest"
+                    }
+                  },
+                  "Identifications": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreatePlayerIdentificationRequest"
+                    }
+                  },
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "FirstName": {
+                  "style": "form"
+                },
+                "LastName": {
+                  "style": "form"
+                },
+                "BirthDate": {
+                  "style": "form"
+                },
+                "Photo": {
+                  "style": "form"
+                },
+                "PhotoUrl": {
+                  "style": "form"
+                },
+                "Email": {
+                  "style": "form"
+                },
+                "IsActive": {
+                  "style": "form"
+                },
+                "StartDate": {
+                  "style": "form"
+                },
+                "DominanceFoot": {
+                  "style": "form"
+                },
+                "DominanceEye": {
+                  "style": "form"
+                },
+                "Gender": {
+                  "style": "form"
+                },
+                "CountryId": {
+                  "style": "form"
+                },
+                "StateId": {
+                  "style": "form"
+                },
+                "CityId": {
+                  "style": "form"
+                },
+                "HealthcarePlanId": {
+                  "style": "form"
+                },
+                "DisciplineId": {
+                  "style": "form"
+                },
+                "CategoryId": {
+                  "style": "form"
+                },
+                "AgentId": {
+                  "style": "form"
+                },
+                "PlayerAddressId": {
+                  "style": "form"
+                },
+                "PlayerHealthcarePlanId": {
+                  "style": "form"
+                },
+                "Positions": {
+                  "style": "form"
+                },
+                "HealthcarePlan.HealthcarePlanId": {
+                  "style": "form"
+                },
+                "HealthcarePlan.AffiliateNumber": {
+                  "style": "form"
+                },
+                "HealthcarePlan.FrontPhoto": {
+                  "style": "form"
+                },
+                "HealthcarePlan.BackPhoto": {
+                  "style": "form"
+                },
+                "HealthcarePlan.Id": {
+                  "style": "form"
+                },
+                "Address.CountryId": {
+                  "style": "form"
+                },
+                "Address.ProvinceId": {
+                  "style": "form"
+                },
+                "Address.CityId": {
+                  "style": "form"
+                },
+                "Address.Street": {
+                  "style": "form"
+                },
+                "Address.Number": {
+                  "style": "form"
+                },
+                "Address.PostalCode": {
+                  "style": "form"
+                },
+                "Address.Id": {
+                  "style": "form"
+                },
+                "Relatives": {
+                  "style": "form"
+                },
+                "Identifications": {
+                  "style": "form"
+                },
+                "Id": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/players/{id}": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePlayerRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePlayerRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePlayerRequest"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Player"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "FirstName": {
+                    "type": "string"
+                  },
+                  "LastName": {
+                    "type": "string"
+                  },
+                  "BirthDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Photo": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "PhotoUrl": {
+                    "type": "string"
+                  },
+                  "Email": {
+                    "type": "string"
+                  },
+                  "IsActive": {
+                    "type": "boolean"
+                  },
+                  "StartDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "DominanceFoot": {
+                    "$ref": "#/components/schemas/DominanceEnum"
+                  },
+                  "DominanceEye": {
+                    "$ref": "#/components/schemas/DominanceEnum"
+                  },
+                  "Gender": {
+                    "$ref": "#/components/schemas/GenderEnum"
+                  },
+                  "CountryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "StateId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CityId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "HealthcarePlanId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "DisciplineId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "CategoryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "AgentId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "PlayerAddressId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "PlayerHealthcarePlanId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Positions": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  },
+                  "HealthcarePlan.HealthcarePlanId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "HealthcarePlan.AffiliateNumber": {
+                    "type": "string"
+                  },
+                  "HealthcarePlan.FrontPhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "HealthcarePlan.BackPhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "HealthcarePlan.Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.CountryId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.ProvinceId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.CityId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Address.Street": {
+                    "type": "string"
+                  },
+                  "Address.Number": {
+                    "type": "string"
+                  },
+                  "Address.PostalCode": {
+                    "type": "string"
+                  },
+                  "Address.Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Relatives": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreatePlayerRelativeRequest"
+                    }
+                  },
+                  "Identifications": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CreatePlayerIdentificationRequest"
+                    }
+                  },
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "FirstName": {
+                  "style": "form"
+                },
+                "LastName": {
+                  "style": "form"
+                },
+                "BirthDate": {
+                  "style": "form"
+                },
+                "Photo": {
+                  "style": "form"
+                },
+                "PhotoUrl": {
+                  "style": "form"
+                },
+                "Email": {
+                  "style": "form"
+                },
+                "IsActive": {
+                  "style": "form"
+                },
+                "StartDate": {
+                  "style": "form"
+                },
+                "DominanceFoot": {
+                  "style": "form"
+                },
+                "DominanceEye": {
+                  "style": "form"
+                },
+                "Gender": {
+                  "style": "form"
+                },
+                "CountryId": {
+                  "style": "form"
+                },
+                "StateId": {
+                  "style": "form"
+                },
+                "CityId": {
+                  "style": "form"
+                },
+                "HealthcarePlanId": {
+                  "style": "form"
+                },
+                "DisciplineId": {
+                  "style": "form"
+                },
+                "CategoryId": {
+                  "style": "form"
+                },
+                "AgentId": {
+                  "style": "form"
+                },
+                "PlayerAddressId": {
+                  "style": "form"
+                },
+                "PlayerHealthcarePlanId": {
+                  "style": "form"
+                },
+                "Positions": {
+                  "style": "form"
+                },
+                "HealthcarePlan.HealthcarePlanId": {
+                  "style": "form"
+                },
+                "HealthcarePlan.AffiliateNumber": {
+                  "style": "form"
+                },
+                "HealthcarePlan.FrontPhoto": {
+                  "style": "form"
+                },
+                "HealthcarePlan.BackPhoto": {
+                  "style": "form"
+                },
+                "HealthcarePlan.Id": {
+                  "style": "form"
+                },
+                "Address.CountryId": {
+                  "style": "form"
+                },
+                "Address.ProvinceId": {
+                  "style": "form"
+                },
+                "Address.CityId": {
+                  "style": "form"
+                },
+                "Address.Street": {
+                  "style": "form"
+                },
+                "Address.Number": {
+                  "style": "form"
+                },
+                "Address.PostalCode": {
+                  "style": "form"
+                },
+                "Address.Id": {
+                  "style": "form"
+                },
+                "Relatives": {
+                  "style": "form"
+                },
+                "Identifications": {
+                  "style": "form"
+                },
+                "Id": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidatorResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/players/form/dropdowns": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlayerFormDropdownResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlayerFormDropdownResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPlayerFormDropdownResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/players/dropdown/{filter}": {
       "get": {
         "tags": [
           "Player"
@@ -683,6 +1503,123 @@
                   "items": {
                     "$ref": "#/components/schemas/KeyNameDto"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/positions/{disciplineId}/dropdown": {
+      "get": {
+        "tags": [
+          "Position"
+        ],
+        "parameters": [
+          {
+            "name": "disciplineId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/states/{countryId}/dropdown": {
+      "get": {
+        "tags": [
+          "State"
+        ],
+        "parameters": [
+          {
+            "name": "countryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyNameDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Zubeldia"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -916,6 +1853,260 @@
         },
         "additionalProperties": false
       },
+      "CreatePlayerAddressRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "provinceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePlayerHealthcarePlanRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "healthcarePlanId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "affiliateNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "frontPhoto": {
+            "type": "string",
+            "format": "binary",
+            "nullable": true
+          },
+          "backPhoto": {
+            "type": "string",
+            "format": "binary",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePlayerIdentificationRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/PlayerDoucmentTypeEnum"
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "frontPhoto": {
+            "type": "string",
+            "format": "binary",
+            "nullable": true
+          },
+          "backPhoto": {
+            "type": "string",
+            "format": "binary",
+            "nullable": true
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePlayerRelativeRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "relationship": {
+            "$ref": "#/components/schemas/FamilyRelationshipTypeEnum"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePlayerRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "photo": {
+            "type": "string",
+            "format": "binary",
+            "nullable": true
+          },
+          "photoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dominanceFoot": {
+            "$ref": "#/components/schemas/DominanceEnum"
+          },
+          "dominanceEye": {
+            "$ref": "#/components/schemas/DominanceEnum"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/GenderEnum"
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "healthcarePlanId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "disciplineId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "agentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "playerAddressId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "playerHealthcarePlanId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "healthcarePlan": {
+            "$ref": "#/components/schemas/CreatePlayerHealthcarePlanRequest"
+          },
+          "address": {
+            "$ref": "#/components/schemas/CreatePlayerAddressRequest"
+          },
+          "relatives": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatePlayerRelativeRequest"
+            },
+            "nullable": true
+          },
+          "identifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatePlayerIdentificationRequest"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DominanceEnum": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "Error": {
         "type": "object",
         "properties": {
@@ -933,6 +2124,21 @@
           }
         },
         "additionalProperties": false
+      },
+      "FamilyRelationshipTypeEnum": {
+        "enum": [
+          0
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "GenderEnum": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "GetContractsDto": {
         "type": "object",
@@ -982,6 +2188,110 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/GetContractsDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlayerFormDropdownResponse": {
+        "type": "object",
+        "properties": {
+          "countries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true
+          },
+          "disciplines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true
+          },
+          "healthcarePlans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true
+          },
+          "agents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true
+          },
+          "genders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "dominances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyNameDto"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlayersResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "identificationNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "discipline": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "nacionality": {
+            "type": "string",
+            "nullable": true
+          },
+          "positions": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetPlayersResponseSearchResultPage": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetPlayersResponse"
             },
             "nullable": true
           }
@@ -1042,6 +2352,22 @@
           }
         },
         "additionalProperties": false
+      },
+      "PlayerDoucmentTypeEnum": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "PlayerOrderPropertiesEnum": {
+        "enum": [
+          0
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "RegisterUserRequest": {
         "type": "object",

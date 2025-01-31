@@ -22,6 +22,86 @@ namespace Zubeldia.Providers.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Agent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAgency")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Agents", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.ToTable("Categories", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Cities", (string)null);
+                });
+
             modelBuilder.Entity("Zubeldia.Domain.Entities.Contract", b =>
                 {
                     b.Property<int>("Id")
@@ -230,6 +310,26 @@ namespace Zubeldia.Providers.Migrations
                     b.ToTable("ContractTrajectories", (string)null);
                 });
 
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries", (string)null);
+                });
+
             modelBuilder.Entity("Zubeldia.Domain.Entities.Currency", b =>
                 {
                     b.Property<int>("Id")
@@ -254,6 +354,46 @@ namespace Zubeldia.Providers.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Currencies", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Discipline", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Disciplines", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.HealthcarePlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HealthcarePlans", (string)null);
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Permission", b =>
@@ -293,19 +433,81 @@ namespace Zubeldia.Providers.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AgentId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(19);
+
                     b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(4);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(18);
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(14);
+
+                    b.Property<int?>("CometId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(20);
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(12);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DocumentNumber")
+                    b.Property<DateTime?>("DeactivationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(8);
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(17);
+
+                    b.Property<short>("DominanceEye")
+                        .HasColumnType("smallint")
+                        .HasColumnOrder(10);
+
+                    b.Property<short>("DominanceFoot")
+                        .HasColumnType("smallint")
+                        .HasColumnOrder(9);
+
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnOrder(3);
+
+                    b.Property<int?>("FifaId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(21);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnOrder(1);
+
+                    b.Property<short>("Gender")
+                        .HasColumnType("smallint")
+                        .HasColumnOrder(11);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("LastModificationBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -313,9 +515,277 @@ namespace Zubeldia.Providers.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnOrder(2);
 
+                    b.Property<string>("Photo")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(6);
+
+                    b.Property<int?>("PlayerAddressId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(15);
+
+                    b.Property<int?>("PlayerHealthcarePlanId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(16);
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(7);
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(13);
+
                     b.HasKey("Id");
 
+                    b.HasIndex("AgentId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("StateId");
+
                     b.ToTable("Players", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(4);
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnOrder(6);
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnOrder(7);
+
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(5);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("PlayerId")
+                        .IsUnique();
+
+                    b.HasIndex("ProvinceId");
+
+                    b.ToTable("PlayerAddresses", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerHealthcarePlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AffiliateNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BackPhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FrontPhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HealthcarePlanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HealthcarePlanId");
+
+                    b.HasIndex("PlayerId")
+                        .IsUnique();
+
+                    b.ToTable("PlayerHealthcarePlan");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerIdentification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BackPhoto")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(7);
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("FrontPhoto")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint")
+                        .HasColumnOrder(3);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerIdentifications", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerPosition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("PlayerPositions", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerRelative", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(4);
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<short>("Relationship")
+                        .HasColumnType("smallint")
+                        .HasColumnOrder(5);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerRelatives", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.ToTable("Positions", (string)null);
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Role", b =>
@@ -351,6 +821,32 @@ namespace Zubeldia.Providers.Migrations
                     b.HasIndex("PermissionId");
 
                     b.ToTable("RolePermissions", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("States", (string)null);
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.User", b =>
@@ -408,6 +904,28 @@ namespace Zubeldia.Providers.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Category", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Discipline", "Discipline")
+                        .WithMany()
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Discipline");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.City", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("State");
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Contract", b =>
@@ -481,6 +999,170 @@ namespace Zubeldia.Providers.Migrations
                     b.Navigation("Currency");
                 });
 
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Player", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Agent", "Agent")
+                        .WithMany()
+                        .HasForeignKey("AgentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Zubeldia.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Country", "Nacionality")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Discipline", "Discipline")
+                        .WithMany()
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Agent");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("City");
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("Nacionality");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerAddress", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Player", "Player")
+                        .WithOne("Address")
+                        .HasForeignKey("Zubeldia.Domain.Entities.PlayerAddress", "PlayerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.State", "State")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Player");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerHealthcarePlan", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.HealthcarePlan", "HealthcarePlan")
+                        .WithMany()
+                        .HasForeignKey("HealthcarePlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Player", "Player")
+                        .WithOne("HealthcarePlan")
+                        .HasForeignKey("Zubeldia.Domain.Entities.PlayerHealthcarePlan", "PlayerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("HealthcarePlan");
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerIdentification", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Player", "Player")
+                        .WithMany("Identifications")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerPosition", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Player", "Player")
+                        .WithMany("Positions")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Zubeldia.Domain.Entities.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.PlayerRelative", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Player", "Player")
+                        .WithMany("Relatives")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.Position", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Discipline", "Discipline")
+                        .WithMany()
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Discipline");
+                });
+
             modelBuilder.Entity("Zubeldia.Domain.Entities.RolePermission", b =>
                 {
                     b.HasOne("Zubeldia.Domain.Entities.Permission", "Permission")
@@ -498,6 +1180,17 @@ namespace Zubeldia.Providers.Migrations
                     b.Navigation("Permission");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Zubeldia.Domain.Entities.State", b =>
+                {
+                    b.HasOne("Zubeldia.Domain.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.UserRole", b =>
@@ -535,7 +1228,19 @@ namespace Zubeldia.Providers.Migrations
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Player", b =>
                 {
+                    b.Navigation("Address")
+                        .IsRequired();
+
                     b.Navigation("Contracts");
+
+                    b.Navigation("HealthcarePlan")
+                        .IsRequired();
+
+                    b.Navigation("Identifications");
+
+                    b.Navigation("Positions");
+
+                    b.Navigation("Relatives");
                 });
 
             modelBuilder.Entity("Zubeldia.Domain.Entities.Role", b =>

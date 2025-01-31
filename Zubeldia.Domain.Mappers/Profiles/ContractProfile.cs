@@ -55,7 +55,7 @@
                 {
                     FirstName = src.Player.FirstName,
                     LastName = src.Player.LastName,
-                    DocumentNumber = src.Player.DocumentNumber,
+                    DocumentNumber = src.Player.GetIdNumber(),
                 }));
 
             CreateMap<ContractSalary, GetContractSalaryDto>()

@@ -17,6 +17,18 @@
             rootPath = Path.Combine(environment.ContentRootPath, relativePath);
         }
 
+        public async Task<byte[]> GetFileAsBytesAsync(string fileRoute, string containerName)
+        {
+            if (string.IsNullOrEmpty(fileRoute)) return null;
+
+            var fileName = Path.GetFileName(fileRoute);
+            var filePath = Path.Combine(rootPath, containerName, fileName);
+
+            if (!File.Exists(filePath)) return null;
+
+            return await File.ReadAllBytesAsync(filePath);
+        }
+
         public Stream GetFileStreamAsync(string fileRoute)
         {
             if (string.IsNullOrEmpty(fileRoute)) throw new ArgumentNullException(nameof(fileRoute));

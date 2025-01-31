@@ -1,0 +1,16 @@
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\bin\Release\net8.0\Zubeldia.Domain.deps.json
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\bin\Release\net8.0\Zubeldia.Domain.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\bin\Release\net8.0\Zubeldia.Domain.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\bin\Release\net8.0\Zubeldia.Commons.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\bin\Release\net8.0\Zubeldia.Commons.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.csproj.AssemblyReference.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.AssemblyInfoInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.AssemblyInfo.cs
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.csproj.CoreCompileInputs.cache
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.sourcelink.json
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.3D559EF4.Up2Date
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\refint\Zubeldia.Domain.dll
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\Zubeldia.Domain.pdb
+D:\VanguardIT\Zubeldia\Zubeldia.Domain\obj\Release\net8.0\ref\Zubeldia.Domain.dll

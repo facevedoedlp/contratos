@@ -17,6 +17,6 @@
         Contracts = 3,
 
         [Display(Name = "Jugadores")]
-        Players = 3,
+        Players = 4,
     }
 }

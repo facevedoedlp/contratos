@@ -8,6 +8,6 @@
         Male = 0,
 
         [Display(Name = "Femenino")]
-        Female = 0,
+        Female = 1,
     }
 }

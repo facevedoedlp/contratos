@@ -6,6 +6,6 @@
 
     public interface IDisciplineDao : IRepository<Discipline>
     {
-        Task<IEnumerable<Discipline>> GetDropdownAsync();
+        Task<IEnumerable<Discipline>> GetAllOrderedAsync();
     }
 }

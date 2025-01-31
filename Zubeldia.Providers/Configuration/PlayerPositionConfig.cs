@@ -14,7 +14,6 @@
             builder.Property(x => x.Id).HasColumnOrder(0);
             builder.Property(x => x.PlayerId).IsRequired().HasColumnOrder(1);
             builder.Property(x => x.PositionId).IsRequired().HasColumnOrder(2);
-            builder.Property(x => x.Priority).IsRequired().HasColumnOrder(3);
 
             builder.HasOne(x => x.Player)
                 .WithMany(x => x.Positions)

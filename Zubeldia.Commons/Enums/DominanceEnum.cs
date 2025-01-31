@@ -5,9 +5,9 @@
     public enum DominanceEnum
     {
         [Display(Name = "Derecho")]
-        Right = 1,
+        Right = 0,
 
         [Display(Name = "Izquierdo")]
-        Left = 2,
+        Left = 1,
     }
 }

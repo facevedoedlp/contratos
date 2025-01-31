@@ -26,7 +26,6 @@ D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\staticwebassets\msbuild.build.Z
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Zubeldia.props
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Zubeldia.props
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\staticwebassets.pack.json
-D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\Zubeldia.csproj.Up2Date
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\Zubeldia.dll
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\refint\Zubeldia.dll
@@ -177,3 +176,4 @@ D:\VanguardIT\Zubeldia\Zubeldia\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\Zubeldia.sourcelink.json
 D:\VanguardIT\Zubeldia\Zubeldia\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
 D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\Zubeldia.MvcApplicationPartsAssemblyInfo.cs
+D:\VanguardIT\Zubeldia\Zubeldia\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

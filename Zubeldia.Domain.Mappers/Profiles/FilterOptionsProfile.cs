@@ -33,6 +33,9 @@
 
             CreateMap<HealthcarePlan, KeyNameDto>()
                 .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(src => false));
+
+            CreateMap<Agent, KeyNameDto>()
+                .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(src => false));
         }
     }
 }

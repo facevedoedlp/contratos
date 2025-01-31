@@ -11,6 +11,5 @@
         : Repository<State>(dbContext, sessionAccessor), IStateDao
     {
         public async Task<IEnumerable<State>> GetByCountryId(int countryId) => await dbContext.States.Where(x => x.CountryId == countryId).OrderBy(x => x.Name).ToListAsync();
-        }
     }
 }

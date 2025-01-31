@@ -26,6 +26,7 @@
                 .Include(e => e.Trajectories)
                     .ThenInclude(e => e.Currency)
                 .Include(e => e.Player)
+                    .ThenInclude(e => e.Identifications)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(e => e.Id == id);
         }
@@ -45,7 +46,6 @@
             using var transaction = await dbContext.Database.BeginTransactionAsync();
             try
             {
-                // Solo procesar las listas que no sean null
                 if (keepObjectiveIds != null)
                 {
                     var validObjectiveIds = keepObjectiveIds.Where(id => id.HasValue).Select(id => id.Value);
@@ -70,7 +70,6 @@
                     dbContext.Set<ContractTrajectory>().RemoveRange(trajectoriesToDelete);
                 }
 
-                // Solo guardar cambios si se procesó alguna lista
                 if (keepObjectiveIds != null || keepSalaryIds != null || keepTrajectoryIds != null)
                 {
                     await dbContext.SaveChangesAsync();
@@ -95,6 +94,7 @@
             var today = DateTime.Today;
             var query = dbContext.Contracts
                 .Include(x => x.Player)
+                    .ThenInclude(x => x.Identifications)
                 .Include(x => x.Salaries)
                     .ThenInclude(x => x.Currency)
                 .Select(c => new
@@ -108,7 +108,7 @@
                 .WhereIf(!string.IsNullOrEmpty(request.SearchText), x =>
                     x.Contract.Player.FirstName.ToUpper().Contains(request.SearchText.ToUpper()) ||
                     x.Contract.Player.LastName.ToUpper().Contains(request.SearchText.ToUpper()) ||
-                    x.Contract.Player.DocumentNumber.ToUpper().Contains(request.SearchText.ToUpper()) ||
+                    x.Contract.Player.Identifications.Any(x => x.Number.ToUpper().Contains(request.SearchText.ToUpper())) ||
                     x.RemainingMonths.ToString().Contains(request.SearchText))
                 .WhereIf(request.Type.HasValue, x => x.Contract.Type == request.Type)
                 .WhereIf(request.CurrencyId.HasValue, x => (x.Contract.Salaries.Any() && x.Contract.Salaries.FirstOrDefault().CurrencyId == request.CurrencyId))

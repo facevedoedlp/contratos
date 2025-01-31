@@ -5,11 +5,11 @@
     using Zubeldia.Domain.Interfaces.Services;
 
     [ApiController]
-    [Route("api/states")]
+    [Route("api/cities")]
     public class CityController(ICityService cityService)
         : ZubeldiaControllerBase
     {
-        [HttpGet("{cityId}/dropdown")]
+        [HttpGet("{stateId}/dropdown")]
         public async Task<IEnumerable<KeyNameDto>> GetByStateIdAsync(int stateId) => await cityService.GetByStateIdAsync(stateId);
     }
 }

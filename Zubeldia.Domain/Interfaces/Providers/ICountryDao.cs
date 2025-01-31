@@ -6,6 +6,6 @@
 
     public interface ICountryDao : IRepository<Country>
     {
-        Task<IEnumerable<Country>> GetDropdownAsync();
+        Task<IEnumerable<Country>> GetAllOrderedAsync();
     }
 }

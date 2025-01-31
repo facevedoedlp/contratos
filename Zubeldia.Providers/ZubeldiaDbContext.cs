@@ -49,7 +49,7 @@
         public virtual DbSet<PlayerRelative> PlayerRelatives { get; set; }
         public virtual DbSet<PlayerIdentification> PlayerIdentifications { get; set; }
         public virtual DbSet<PlayerPosition> PlayerPositions { get; set; }
-        public virtual DbSet<PlayerBirthPlace> PlayerBirthPlaces { get; set; }
+        public virtual DbSet<PlayerAddress> PlayerAddresses { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<City> Cities { get; set; }
@@ -57,5 +57,6 @@
         public virtual DbSet<Position> Positions { get; set; }
         public virtual DbSet<HealthcarePlan> HealthcarePlans { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Agent> Agents { get; set; }
     }
 }

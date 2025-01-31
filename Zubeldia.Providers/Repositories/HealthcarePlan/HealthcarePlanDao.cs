@@ -10,6 +10,6 @@
     public class HealthcarePlanDao(ZubeldiaDbContext dbContext, ISessionAccessor sessionAccessor)
         : Repository<HealthcarePlan>(dbContext, sessionAccessor), IHealthcarePlanDao
     {
-        public async Task<IEnumerable<HealthcarePlan>> GetDropdownAsync() => await dbContext.HealthcarePlans.OrderBy(x => x.Name).ToListAsync();
+        public async Task<IEnumerable<HealthcarePlan>> GetAllOrderedAsync() => await dbContext.HealthcarePlans.OrderBy(x => x.Name).ToListAsync();
     }
 }

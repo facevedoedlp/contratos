@@ -12,7 +12,7 @@
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Dtos.Models.Commons;
 
-    public class ContractService(IContractDao contractDao, ICurrencyDao currencyDao, IFileStorageService fileStorageService, IPdfContractProcessor pdfContractProcessor, IMapper mapper, IValidator<CreateContractRequest> contractValidator)
+    public class ContractService(IContractDao contractDao, ICurrencyDao currencyDao, IFileStorageService fileStorageService, IMapper mapper, IValidator<CreateContractRequest> contractValidator)
               : IContractService
     {
         public IEnumerable<KeyNameDto> GetTypes() => EnumExtension.GetKeyNameFromEnum<ContractTypeEnum>();

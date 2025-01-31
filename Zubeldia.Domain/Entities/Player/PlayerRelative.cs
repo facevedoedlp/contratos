@@ -7,6 +7,7 @@
         public int PlayerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
         public FamilyRelationshipTypeEnum Relationship { get; set; }
         public Player Player { get; set; }
     }

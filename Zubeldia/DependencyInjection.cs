@@ -5,13 +5,14 @@
     using FluentValidation;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.OpenApi.Models;
-    using Zubeldia.Controllers;
     using Zubeldia.Domain.Dtos.Contract;
+    using Zubeldia.Domain.Dtos.Player;
     using Zubeldia.Domain.Entities;
     using Zubeldia.Domain.Interfaces.Providers;
     using Zubeldia.Domain.Interfaces.Services;
     using Zubeldia.Domain.Mappers.Profiles;
     using Zubeldia.Domain.Validators.Contract;
+    using Zubeldia.Domain.Validators.Player;
     using Zubeldia.Dtos.Models.User;
     using Zubeldia.Dtos.Validatiors.User;
     using Zubeldia.Providers;
@@ -79,6 +80,7 @@
             services.AddScoped<IDisciplineDao, DisciplineDao>();
             services.AddScoped<IPositionDao, PositionDao>();
             services.AddScoped<IHealthcarePlanDao, HealthcarePlanDao>();
+            services.AddScoped<IAgentDao, AgentDao>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -101,6 +103,7 @@
         {
             services.AddScoped<IValidator<RegisterUserRequest>, UserValidator>();
             services.AddScoped<IValidator<CreateContractRequest>, ContractValidator>();
+            services.AddScoped<IValidator<CreatePlayerRequest>, PlayerValidator>();
         }
 
         private static void AddMappers(this IServiceCollection services)
@@ -110,6 +113,7 @@
                 m.AddProfile(new UserProfile());
                 m.AddProfile(new ValidatorResultProfile());
                 m.AddProfile(new ContractProfile());
+                m.AddProfile(new PlayerProfile());
                 m.AddProfile(new FilterOptionsProfile());
             }).CreateMapper());
         }

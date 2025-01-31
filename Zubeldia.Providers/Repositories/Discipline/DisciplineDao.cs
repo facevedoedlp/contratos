@@ -10,6 +10,6 @@
     public class DisciplineDao(ZubeldiaDbContext dbContext, ISessionAccessor sessionAccessor)
         : Repository<Discipline>(dbContext, sessionAccessor), IDisciplineDao
     {
-        public async Task<IEnumerable<Discipline>> GetDropdownAsync() => await dbContext.Disciplines.OrderBy(x => x.Name).ToListAsync();
+        public async Task<IEnumerable<Discipline>> GetAllOrderedAsync() => await dbContext.Disciplines.OrderBy(x => x.Name).ToListAsync();
     }
 }

@@ -12,16 +12,7 @@
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnOrder(0);
-            builder.Property(x => x.Name)
-                .IsRequired()
-                .HasMaxLength(100)
-                .HasColumnOrder(1);
-
-            // Evitar eliminación si está en uso
-            builder.HasMany<Player>()
-                .WithOne(x => x.HealthcarePlan)
-                .HasForeignKey(x => x.HealthcarePlanId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(100).HasColumnOrder(1);
         }
     }
 }
