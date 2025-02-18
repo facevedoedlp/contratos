@@ -10,3 +10,15 @@ D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\refint\Zubeldia.Commons
 D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.pdb
 D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\ref\Zubeldia.Commons.dll
 D:\VanguardIT\Zubeldia\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.sourcelink.json
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\bin\Debug\net8.0\Zubeldia.Commons.deps.json
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\bin\Debug\net8.0\Zubeldia.Commons.dll
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\bin\Debug\net8.0\Zubeldia.Commons.pdb
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.AssemblyInfoInputs.cache
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.AssemblyInfo.cs
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.csproj.CoreCompileInputs.cache
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.sourcelink.json
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.dll
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\refint\Zubeldia.Commons.dll
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\Zubeldia.Commons.pdb
+C:\Users\fede\Desktop\CONTRATOS\Zubeldia.Commons\obj\Debug\net8.0\ref\Zubeldia.Commons.dll

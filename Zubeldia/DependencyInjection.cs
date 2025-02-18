@@ -57,13 +57,14 @@
         private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ZubeldiaDbContext>(options =>
-                options.UseSqlServer(
+                options.UseNpgsql(
                     configuration.GetConnectionString("ZUBELDIA_DB_CONNECTION")
                 ));
 
-            services.AddScoped<IZubeldiaDbContext>(provider => 
+            services.AddScoped<IZubeldiaDbContext>(provider =>
                 provider.GetService<ZubeldiaDbContext>());
         }
+
 
         private static void AddProviders(this IServiceCollection services)
         {
